@@ -16,36 +16,38 @@ import '../routes/api_rutas.dart';
 class SQLHelperCajeros {
   static Future<void> createTables(sql.Database database) async {
     print('... PROSSESING TABLE ...');
-    await database.execute("""CREATE TABLE cajeros(
-          custom_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-          id INTEGER ,
-          contacto_id INTEGER,
-          user TEXT,
-          password TEXT,
-          almacen_id INTEGER,
-          sucursal_id INTEGER,
-          empresa_id INTEGER,
-          cliente_id INTEGER,
-          vendedor_id INTEGER,
-          razon_social_id INTEGER,
-          moneda TEXT,
-          serie_venta TEXT,
-          serie_cobro TEXT,
-          created_at TEXT,
-          updated_at TEXT
-          user_id INTEGER,
-          api_key_id INTEGER,
-          cuenta_bancaria_id INTEGER,
-          ticket TEXT,
-          downloaded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-      )""");
-    print('... TABLE CREATED SUCCESSFULY ...');
+    await database.execute("""
+    CREATE TABLE cajero(
+        custom_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        id INTEGER,
+        contacto_id INTEGER,
+        user TEXT,
+        password TEXT,
+        almacen_id INTEGER,
+        sucursal_id INTEGER,
+        empresa_id INTEGER,
+        cliente_id INTEGER,
+        vendedor_id INTEGER,
+        razon_social_id INTEGER,
+        moneda TEXT,
+        serie_venta TEXT,
+        serie_cobro TEXT,
+        created_at TEXT,
+        updated_at TEXT,
+        user_id INTEGER,
+        api_key_id INTEGER,
+        cuenta_bancaria_id INTEGER,
+        downloaded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )
+""");
+
+    print('... TABLE CREATED SUCCESSFULLY ...');
   }
 
 //la función "db()"" abre la DB SQLite Y crear las tablas utilizando la función "createTables".
   static Future<sql.Database> db() async {
     print('... CREATING DATABASE ...');
-    return sql.openDatabase('app_pos_cajeros.db', version: 1,
+    return sql.openDatabase('app_cajeros.db', version: 1,
         //"ONCREATE" es una función anónima que se ejecutará cuando se cree una nueva base de datos o cuando se actualice su versión
         onCreate: (sql.Database database, int version) async {
       print('... CREATING A TABLE ...');
@@ -71,7 +73,8 @@ a objetos de Dart utilizando la clase json.
     final db = await SQLHelperCajeros.db();
 
     // Eliminar todos los datos de la tabla "cajeros"
-    await db.delete('cajeros');
+
+    //await db.delete('cajeros');
 
     print('... BUILDING LIST  B-) ...');
     for (var data in jsonBody) {
@@ -96,8 +99,7 @@ a objetos de Dart utilizando la clase json.
             data['cajeros']['updated_at'],
             data['cajeros']['user_id'],
             data['cajeros']['api_key_id'],
-            data['cajeros']['cuenta_bancaria_id'],
-            data['cajeros']['ticket']));
+            data['cajeros']['cuenta_bancaria_id']));
       }
     }
 
@@ -121,10 +123,9 @@ a objetos de Dart utilizando la clase json.
         'user_id': element.user_id,
         'api_key_id': element.api_key_id,
         'cuenta_bancaria_id': element.cuenta_bancaria_id,
-        'ticket': element.ticket
       };
       print('.. DATOS INSERTADOS ..');
-      await db.insert('cajeros', data,
+      await db.insert('cajero', data,
           conflictAlgorithm: sql.ConflictAlgorithm.replace);
     });
     print('.. COMPLETE ..');
@@ -136,16 +137,16 @@ a objetos de Dart utilizando la clase json.
 
   static Future<List<Map<String, dynamic>>> getItemsCajero() async {
     final db = await SQLHelperCajeros.db();
-    return db.query('cajeros', orderBy: "id");
+    return db.query('cajero', orderBy: "id");
   }
 
   static Future<List<Map<String, dynamic>>> getItem(int id) async {
     final db = await SQLHelperCajeros.db();
-    return db.query('cajeros', where: "id = ?", whereArgs: [id], limit: 1);
+    return db.query('cajero', where: "id = ?", whereArgs: [id], limit: 1);
   }
 
   static Future<List> find(int id) async {
     final db = await SQLHelperCajeros.db();
-    return db.query('cajeros', where: "id = ?", whereArgs: [id], limit: 1);
+    return db.query('cajero', where: "id = ?", whereArgs: [id], limit: 1);
   }
 }
