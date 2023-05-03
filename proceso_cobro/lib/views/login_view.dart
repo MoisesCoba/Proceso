@@ -24,6 +24,7 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   List<Map<String, dynamic>> _cajeros = [];
+  List<Map<String, dynamic>> _cajero = [];
   late Database _database;
   @override
   void initState() {
@@ -60,13 +61,17 @@ class _LoginViewState extends State<LoginView> {
 
         return;
       }
+
+      // final data = await SQLHelperCajeros.getItemsCajero();
+      // _cajero = data;
+      // print(_cajero[0]['user']);
       //EN ESTE APARTADO AHCE LA CONSULTA Y VALIDACION
       final databasePath = await getDatabasesPath();
-      final path = join(databasePath, 'app_pos_cajeros.db');
+      final path = join(databasePath, 'app_cajeros.db');
       _database = await openDatabase(path, version: 1);
       print('la direccion${_database}');
       final result = await _database.rawQuery(
-          'SELECT * FROM cajeros WHERE user = ? AND password = ?',
+          'SELECT * FROM cajero WHERE user = ? AND password = ?',
           [email, password]);
       print(result);
 
@@ -74,8 +79,8 @@ class _LoginViewState extends State<LoginView> {
       print(password);
       if (result.isNotEmpty) {
         //SI SE VALIDA SUS DATOS TE DARA LA BIENVENIDA
-        print('Bienvenido ${result.first['user']}');
-        Navigator.pushNamed(context, 'home');
+        // print('Bienvenido ${result.first['user']}');
+        // Navigator.pushNamed(context, 'home');
       } else {
         final snackBar = SnackBar(
           /// need to set following properties for best effect of awesome_snackbar_content

@@ -17,7 +17,6 @@ class CajerosModel {
   int? user_id;
   int? api_key_id;
   int? cuenta_bancaria_id;
-  String? ticket;
 
   CajerosModel(
     this.id,
@@ -38,7 +37,6 @@ class CajerosModel {
     this.user_id,
     this.api_key_id,
     this.cuenta_bancaria_id,
-    this.ticket,
   );
 
   CajerosModel.fromJson(Map<String, dynamic> parsedJson)
@@ -59,8 +57,7 @@ class CajerosModel {
         updated_at = parsedJson["updated_at"],
         user_id = parsedJson["user_id"],
         api_key_id = parsedJson["api_key_id"],
-        cuenta_bancaria_id = parsedJson["cuenta_bancaria_id"],
-        ticket = parsedJson["ticket"];
+        cuenta_bancaria_id = parsedJson["cuenta_bancaria_id"];
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -81,6 +78,5 @@ class CajerosModel {
         "user_id": user_id,
         "api_key_id": api_key_id,
         "cuenta_bancaria_id": cuenta_bancaria_id,
-        "ticket": ticket
       };
 }
