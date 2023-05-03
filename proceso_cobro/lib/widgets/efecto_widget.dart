@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:proceso_cobro/controllers/detalle_listacontacto_controler.dart';
+import 'package:proceso_cobro/controllers/lista_contacto_controller.dart';
 
 import '../controllers/cagero_controller.dart';
 
@@ -19,7 +21,8 @@ class _SynchronizeButtonState extends State<SynchronizeButton> {
     });
 
     await SQLHelperCajeros.getApiCajeros();
-    // await SQLHelperLIneas.getApiLineas();
+    await SQLHelperListaContacto.getApiListaContacto();
+    await SQLHelperDetalleListaContacto.getApiDetalleListaContacto();
     // await SQLHelperRazonSocial.getApiRazonSociale();
     // await SQLHelperMarcas.getApiMarcas();
     // await SQLHelperContacto.getApiContactos();
