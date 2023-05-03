@@ -33,6 +33,10 @@ class SQLHelperCajeros {
           serie_cobro TEXT,
           created_at TEXT,
           updated_at TEXT
+          user_id INTEGER,
+          api_key_id INTEGER,
+          cuenta_bancaria_id INTEGER,
+          ticket TEXT,
           downloaded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )""");
     print('... TABLE CREATED SUCCESSFULY ...');
@@ -89,7 +93,11 @@ a objetos de Dart utilizando la clase json.
             data['cajeros']['serie_venta'],
             data['cajeros']['serie_cobro'],
             data['cajeros']['created_at'],
-            data['cajeros']['updated_at']));
+            data['cajeros']['updated_at'],
+            data['cajeros']['user_id'],
+            data['cajeros']['api_key_id'],
+            data['cajeros']['cuenta_bancaria_id'],
+            data['cajeros']['ticket']));
       }
     }
 
@@ -109,7 +117,11 @@ a objetos de Dart utilizando la clase json.
         'serie_venta': element.serie_venta,
         'serie_cobro': element.serie_cobro,
         'created_at': element.created_at,
-        'updated_at': element.updated_at
+        'updated_at': element.updated_at,
+        'user_id': element.user_id,
+        'api_key_id': element.api_key_id,
+        'cuenta_bancaria_id': element.cuenta_bancaria_id,
+        'ticket': element.ticket
       };
       print('.. DATOS INSERTADOS ..');
       await db.insert('cajeros', data,
