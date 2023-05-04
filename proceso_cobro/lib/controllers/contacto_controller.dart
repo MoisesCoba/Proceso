@@ -90,7 +90,7 @@ a objetos de Dart utilizando la clase json.
     final db = await SQLHelperContacto.db();
 
     // Eliminar todos los datos de la tabla "cajeros"
-    //await db.delete('contacto');
+    await db.delete('contacto');
 
     print('... BUILDING LIST  B-) ...');
     for (var data in jsonBody) {

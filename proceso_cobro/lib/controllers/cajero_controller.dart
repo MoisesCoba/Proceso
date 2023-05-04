@@ -74,7 +74,7 @@ a objetos de Dart utilizando la clase json.
 
     // Eliminar todos los datos de la tabla "cajeros"
 
-    //await db.delete('cajeros');
+    await db.delete('cajero');
 
     print('... BUILDING LIST  B-) ...');
     for (var data in jsonBody) {

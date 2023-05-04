@@ -43,7 +43,7 @@ class SQLHelperListaContacto {
     var jsonBody = json.decode(responseBody);
 
     final db = await SQLHelperListaContacto.db();
-    //await db.delete('listaContacto');
+    await db.delete('listaContacto');
 
     for (var data in jsonBody) {
       getLista.add(ListaContactoModel(
