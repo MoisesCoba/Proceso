@@ -44,7 +44,6 @@ class _HomeContenedorState extends State<HomeContenedor> {
   }
 
   List<Map<String, dynamic>> _elementos = [];
-  List<String> chips = ['yucatan', 'merida', 'espita', 'tizimin', 'temozon'];
   List<Map<String, dynamic>> _contactos = [];
   List<Map<String, dynamic>> _detalles = [];
   List<Map<String, dynamic>> _relacion = [];
