@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:proceso_cobro/controllers/detalle_listacontacto_controler.dart';
+import 'package:proceso_cobro/controllers/documento_credito_controller.dart';
+import 'package:proceso_cobro/controllers/forma_pago_controller.dart';
 import 'package:proceso_cobro/controllers/lista_contacto_controller.dart';
 
-import '../controllers/cagero_controller.dart';
+import '../controllers/cajero_controller.dart';
+import '../controllers/contacto_controller.dart';
 
 class SynchronizeButton extends StatefulWidget {
   const SynchronizeButton({Key? key}) : super(key: key);
@@ -23,10 +26,9 @@ class _SynchronizeButtonState extends State<SynchronizeButton> {
     await SQLHelperCajeros.getApiCajeros();
     await SQLHelperListaContacto.getApiListaContacto();
     await SQLHelperDetalleListaContacto.getApiDetalleListaContacto();
-    // await SQLHelperRazonSocial.getApiRazonSociale();
-    // await SQLHelperMarcas.getApiMarcas();
-    // await SQLHelperContacto.getApiContactos();
-    // await SQLHelperProductos.getApiProductos();
+    await SQLHelperFormaPago.getApiFormaPago();
+    await SQLHelperContacto.getApiContactos();
+    await SQLHelperDocumentoCredito.getApiDocumento();
     setState(() {
       _isSyncing = false;
     });

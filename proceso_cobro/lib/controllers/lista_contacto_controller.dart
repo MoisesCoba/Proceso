@@ -24,7 +24,7 @@ class SQLHelperListaContacto {
   }
 
   static Future<sql.Database> db() async {
-    print('... CREATING DATABASE --> lista Precio ...');
+    print('... CREATING DATABASE --> lista contactos ...');
     return sql.openDatabase('app_pos_listaContacto.db', version: 1,
         onCreate: (sql.Database database, int version) async {
       print('... CREATING A TABLE ...');
@@ -43,7 +43,7 @@ class SQLHelperListaContacto {
     var jsonBody = json.decode(responseBody);
 
     final db = await SQLHelperListaContacto.db();
-    await db.delete('listaContacto');
+    //await db.delete('listaContacto');
 
     for (var data in jsonBody) {
       getLista.add(ListaContactoModel(
@@ -68,6 +68,7 @@ class SQLHelperListaContacto {
           conflictAlgorithm: sql.ConflictAlgorithm.replace);
     });
     late int e = 1;
+    print('.. TABLE CREATED lista contactos ..');
     return e;
   }
 
