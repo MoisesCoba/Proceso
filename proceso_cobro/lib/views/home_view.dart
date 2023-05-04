@@ -92,6 +92,13 @@ class _HomeContenedorState extends State<HomeContenedor> {
             color: Colors.white,
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'Venta');
+              },
+              icon: const Icon(Icons.navigate_next)),
+        ],
       ),
       body: ListView.builder(
         itemCount: _elementos.length,
@@ -143,13 +150,9 @@ class _HomeContenedorState extends State<HomeContenedor> {
               ),
             ),
             children: <Widget>[
-              SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                child: Wrap(
-                  spacing: MediaQuery.of(context).size.width * 0.01,
-                  children: chipsList,
-                ),
+              Column(
+                verticalDirection: VerticalDirection.up,
+                children: chipsList,
               )
             ],
           );
