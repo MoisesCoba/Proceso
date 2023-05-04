@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../Dialogs/dialog_pago.dart';
 import '../controllers/forma_pago_controller.dart';
 import '../provider/provider_costo.dart';
 
@@ -17,14 +18,7 @@ class _VentaState extends State<VentaView> {
   @override
   void initState() {
     super.initState();
-    //_refreshProductos();
-  }
-  List<Map<String, dynamic>> _pagos = [];
-  void _Pagos() async {
-    final data = await SQLHelperFormaPago.getItems();
-    setState(() {
-      _pagos = data;
-    });
+    _Pagos();
   }
 
   List<String> TituloCards = [
@@ -35,88 +29,51 @@ class _VentaState extends State<VentaView> {
     "Saldo",
     "Vencimiento"
   ];
-
-  String? _selectedPago = "Tarjeta";
-  List<String> _pagoMetodo = ["Tarjeta", "Efectivo", "Bono"];
   Widget build(BuildContext context) {
-    void _mostrarBottomSheet(BuildContext context) {
-      showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return SizedBox(
-            height: 200,
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerRight,
-                  padding: EdgeInsets.all(8),
-                  child: Text(
-                    'Saldo Actual \$',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DropdownButton<String>(
-                      value: _selectedPago,
-                      items: _pagoMetodo.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (value) {},
-                    ),
-                  ],
-                )
-              ],
-            ),
-          );
-        },
-      );
+    final ProvCosto ProCosto = ProvCosto();
+    List<Map<String, dynamic>> _pagos = [];
+    void _Pagos() async {
+      final data = await SQLHelperFormaPago.getItems();
+      setState(() {
+        _pagos = data;
+        for (var i = 0; i < _pagos.length; i++){
+          ProCosto.pagos =};
+        print(_pagos);
+      });
     }
 
-    final ProvCosto ProCosto = ProvCosto();
-    List<Card> Cards = TituloCards.map((card) => Card(
-          elevation: 2,
-          child: GestureDetector(
-            onTap: () {
-              _mostrarBottomSheet(context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
-                      card,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: MediaQuery.of(context).size.width * 0.04,
-                      ),
-                    ),
+    List<Card> Cards = TituloCards.map(
+      (card) => Card(
+        elevation: 2,
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  card,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: MediaQuery.of(context).size.width * 0.04,
                   ),
-                  SizedBox(height: 8),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        '\$5000',
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width * 0.035,
-                          color: Colors.green,
-                        ),
-                      ))
-                ],
+                ),
               ),
-            ),
+              SizedBox(height: 8),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    '\$5000',
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.035,
+                      color: Colors.green,
+                    ),
+                  ))
+            ],
           ),
-        )).toList();
+        ),
+      ),
+    ).toList();
 
     return Scaffold(
         appBar: AppBar(
@@ -138,43 +95,12 @@ class _VentaState extends State<VentaView> {
             child: GestureDetector(
               child: Wrap(children: Cards),
               onTap: () {
-                /*showBottomSheet(
+                showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return SizedBox(
-                      height: 200,
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              'Forma de pago',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          DropdownButton<String>(
-                            value: 'Tarjeta de crédito',
-                            items: <String>[
-                              'Tarjeta de crédito',
-                              'Transferencia bancaria',
-                              'PayPal',
-                              'Bitcoin'
-                            ].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (value) {},
-                          ),
-                        ],
-                      ),
-                    );
+                    return PagoDialog(ProCosto: ProCosto);
                   },
-                );*/
+                );
               },
             ),
           ),
