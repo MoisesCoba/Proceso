@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 
-import '../controllers/cagero_controller.dart';
+import '../controllers/cajero_controller.dart';
 import '../themes/decoracion_curve.dart';
 import '../widgets/efecto_widget.dart';
 

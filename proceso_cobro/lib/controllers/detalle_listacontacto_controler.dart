@@ -45,14 +45,16 @@ class SQLHelperDetalleListaContacto {
     await db.delete('detalleListaContacto');
 
     for (var data in jsonBody) {
-      if (data['detalles'] == null) {
+      if (data['detalles'] == []) {
         print("no existe el detalle");
       } else {
-        getLista.add(DetalleListaContactoModel(
-            data['detalles']['id'],
-            data['detalles']['lista_contacto_id'],
-            data['detalles']['contacto_id'],
-            data['detalles']['estatus']));
+        for (int i = 0; i < data['detalles'].length; i++) {
+          getLista.add(DetalleListaContactoModel(
+              data['detalles'][i]['id'],
+              data['detalles'][i]['lista_contacto_id'],
+              data['detalles'][i]['contacto_id'],
+              data['detalles'][i]['estatus']));
+        }
       }
     }
 
@@ -68,6 +70,7 @@ class SQLHelperDetalleListaContacto {
           conflictAlgorithm: sql.ConflictAlgorithm.replace);
     });
     late int e = 1;
+    print('.. TABLE CREATED detalle lista contactos..');
     return e;
   }
 
