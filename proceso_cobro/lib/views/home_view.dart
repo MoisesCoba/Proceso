@@ -59,7 +59,7 @@ class _HomeContenedorState extends State<HomeContenedor> {
         leading: GestureDetector(
           onTap: () {
             // Código para cerrar la aplicación
-            SystemNavigator.pop();
+            Navigator.pushNamed(context, 'login');
           },
           child: Icon(
             Icons.close,

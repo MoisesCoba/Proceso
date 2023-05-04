@@ -78,6 +78,7 @@ class _LoginViewState extends State<LoginView> {
       print(email);
       print(password);
       if (result.isNotEmpty) {
+        Navigator.pushNamed(context, 'Home');
         //SI SE VALIDA SUS DATOS TE DARA LA BIENVENIDA
         // print('Bienvenido ${result.first['user']}');
         // Navigator.pushNamed(context, 'home');
