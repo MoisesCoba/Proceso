@@ -4,3 +4,7 @@ const apiContactos =
     'https://dev.soferp.com/app/contactos?database_id=1&api_key=z0LxEbQGghVeX1dYNPlBqHHOaCrkuLSs&registros=-1';
 const api_lista_contactos =
     'https://dev.soferp.com/app/listas_contacto?database_id=1&api_key=z0LxEbQGghVeX1dYNPlBqHHOaCrkuLSs&registros=-1';
+const api_documentos_credito =
+    "https://dev.soferp.com/app/documentos_credito?database_id=1&api_key=z0LxEbQGghVeX1dYNPlBqHHOaCrkuLSs&registros=-1";
+const api_formas_pago =
+    "https://dev.soferp.com/app/formas_pago?database_id=1&api_key=z0LxEbQGghVeX1dYNPlBqHHOaCrkuLSs&registros=-1";
