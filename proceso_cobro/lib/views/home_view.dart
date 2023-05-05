@@ -10,6 +10,8 @@ import 'package:proceso_cobro/provider/provider_costo.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/contacto_controller.dart';
+import '../controllers/documento_credito_controller.dart';
+import 'venta_view.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({super.key});
@@ -20,21 +22,6 @@ class HomeView extends StatefulWidget {
 
 class HomeViewState extends State<HomeView> {
   final ProvCosto ProCosto = ProvCosto();
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => new ProvCosto(),
-      child: Scaffold(body: HomeContenedor()),
-    );
-  }
-}
-
-class HomeContenedor extends StatefulWidget {
-  @override
-  _HomeContenedorState createState() => _HomeContenedorState();
-}
-
-class _HomeContenedorState extends State<HomeContenedor> {
   @override
   void initState() {
     super.initState();
@@ -87,97 +74,98 @@ class _HomeContenedorState extends State<HomeContenedor> {
     final ProCosto = Provider.of<ProvCosto>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Rutas de contacto',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: MediaQuery.of(context).size.width * 0.05,
-            fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          title: Text(
+            'Rutas de contacto',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: MediaQuery.of(context).size.width * 0.05,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+          leading: GestureDetector(
+            onTap: () {
+              SystemNavigator.pop();
+            },
+            child: Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
           ),
         ),
-        centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {
-            SystemNavigator.pop();
-          },
-          child: Icon(
-            Icons.close,
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'Venta');
-              },
-              icon: const Icon(Icons.navigate_next)),
-        ],
-      ),
-      body: RefreshIndicator(
-        onRefresh: _lista,
-        child: ListView.builder(
-          itemCount: _elementos.length,
-          itemBuilder: (context, index) {
-            List<Map<String, dynamic>> detalles = _detalles
-                .where((detalle) =>
-                    detalle['lista_contacto_id'] == _elementos[index]['id'])
-                .toList();
-            List<Map<String, dynamic>> contactos = [];
-
-            for (Map<String, dynamic> detalle in detalles) {
-              Map<String, dynamic>? contacto = _contactos.firstWhereOrNull(
-                  (contacto) => contacto['id'] == detalle['contacto_id']);
-              if (contacto != null) {
-                contactos.add(contacto);
-              }
-            }
-            List<Widget> botonList = [];
-            if (contactos.isNotEmpty) {
-              botonList = contactos
-                  .map((contacto) => ElevatedButton(
-                        autofocus: true,
-                        onPressed: () {
-                          ProCosto.contactoId = contacto['id'];
-                          print(ProCosto.contactoId);
-                          Navigator.pushNamed(context, 'Venta');
-                        },
-                        child: Row(
-                          children: [
-                            Icon(Icons.account_circle),
-                            SizedBox(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.035),
-                            Text(contacto['nombre_completo'],
-                                style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.width *
-                                            0.035)),
-                          ],
-                        ),
-                      ))
+        body: RefreshIndicator(
+          onRefresh: _lista,
+          child: ListView.builder(
+            itemCount: _elementos.length,
+            itemBuilder: (context, index) {
+              List<Map<String, dynamic>> detalles = _detalles
+                  .where((detalle) =>
+                      detalle['lista_contacto_id'] == _elementos[index]['id'])
                   .toList();
-            } else {
-              botonList.add(Text('No hay contactos para esta lista'));
-            }
-            return ExpansionTile(
-              leading: Icon(Icons.list),
-              title: Text(
-                _elementos[index]['nombre'],
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.05,
+              List<Map<String, dynamic>> contactos = [];
+
+              for (Map<String, dynamic> detalle in detalles) {
+                Map<String, dynamic>? contacto = _contactos.firstWhereOrNull(
+                    (contacto) => contacto['id'] == detalle['contacto_id']);
+                if (contacto != null) {
+                  contactos.add(contacto);
+                }
+              }
+              List<Widget> botonList = [];
+              if (contactos.isNotEmpty) {
+                botonList = contactos
+                    .map((contacto) => ElevatedButton(
+                          autofocus: true,
+                          onPressed: () async {
+                            print(contacto['id']);
+                            final data =
+                                await SQLHelperDocumentoCredito.getItems();
+                            setState(() {
+                              ProCosto.objContacto = contacto;
+                              ProCosto.documentacion = data
+                                  .where((element) =>
+                                      element['contacto_id'] == contacto['id'])
+                                  .toList();
+                            });
+
+                            Navigator.pushNamed(context, 'Venta');
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.account_circle),
+                              SizedBox(
+                                  width: MediaQuery.of(context).size.width *
+                                      0.035),
+                              Text(contacto['nombre_completo'],
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.035)),
+                            ],
+                          ),
+                        ))
+                    .toList();
+              } else {
+                botonList.add(Text('No hay contactos para esta lista'));
+              }
+              return ExpansionTile(
+                leading: Icon(Icons.list),
+                title: Text(
+                  _elementos[index]['nombre'],
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.05,
+                  ),
                 ),
-              ),
-              backgroundColor: Colors.grey[50],
-              children: <Widget>[
-                Column(
-                  children: botonList,
-                )
-              ],
-            );
-          },
-        ),
-      ),
-    );
+                backgroundColor: Colors.grey[50],
+                children: <Widget>[
+                  Column(
+                    children: botonList,
+                  )
+                ],
+              );
+            },
+          ),
+        ));
   }
 }
