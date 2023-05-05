@@ -21,7 +21,9 @@ class _PagoDialogState extends State<PagoDialog> {
     String _selectFecha =
         "${fechaActual.day}/${fechaActual.month}/${fechaActual.year}";
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.4,
+      height: (MediaQuery.of(context).size.width /
+              MediaQuery.of(context).size.height) *
+          600,
       child: Column(
         children: [
           Container(
@@ -47,20 +49,29 @@ class _PagoDialogState extends State<PagoDialog> {
                       fontSize: MediaQuery.of(context).size.width * 0.04,
                     ),
                   )),
-              DropdownButton<String>(
-                value: _selectPago,
-                items: widget.TipoPagos.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectPago = value;
-                  });
-                },
-              ),
+              Expanded(
+                child: DropdownButton<String>(
+                  isExpanded: false,
+                  iconEnabledColor: Colors.blue,
+                  itemHeight: null,
+                  icon: Icon(Icons.payments),
+                  value: _selectPago,
+                  items: widget.TipoPagos.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value,
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.035)),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectPago = value;
+                    });
+                  },
+                ),
+              )
             ],
           ),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -142,7 +153,7 @@ class _PagoDialogState extends State<PagoDialog> {
                 onPressed: () {},
                 icon: Icon(
                   Icons.local_print_shop,
-                  size: MediaQuery.of(context).size.width * 0.09 ,
+                  size: MediaQuery.of(context).size.width * 0.09,
                 ))
           ])
         ],

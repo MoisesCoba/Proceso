@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:proceso_cobro/provider/provider_costo.dart';
+import 'package:provider/provider.dart';
 import './themes/tema.dart';
 import 'routes/rutas_app.dart';
 
@@ -18,7 +20,9 @@ void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   setup();
-  runApp(const ProsCobro());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => ProvCosto()),
+  ], child: const ProsCobro()));
 }
 
 void setup() async {

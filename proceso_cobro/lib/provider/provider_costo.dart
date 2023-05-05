@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class ProvCosto with ChangeNotifier {
   List<String> _pagos = [];
-  int _idContacto = 0;
+  Map<String, dynamic> _Contacto = {};
+  List<Map<String, dynamic>> _documentacion = [];
 
   List<String> get pagos => _pagos;
   set pagos(List<String> valor) {
@@ -10,9 +12,15 @@ class ProvCosto with ChangeNotifier {
     notifyListeners();
   }
 
-  int get idContacto => _idContacto;
-  set idContacto(int valor) {
-    _idContacto = valor;
+  Map<String, dynamic> get objContacto => _Contacto;
+  set objContacto(Map<String, dynamic> valor) {
+    _Contacto = valor;
+    notifyListeners();
+  }
+
+  List<Map<String, dynamic>> get documentacion => _documentacion;
+  set documentacion(List<Map<String, dynamic>> valor) {
+    _documentacion = valor;
     notifyListeners();
   }
 }

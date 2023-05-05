@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_launcher_icons/constants.dart';
 import 'package:proceso_cobro/controllers/documento_credito_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,8 @@ import '../controllers/forma_pago_controller.dart';
 import '../provider/provider_costo.dart';
 
 class VentaView extends StatefulWidget {
-  VentaView({super.key});
+  const VentaView({super.key});
+
   @override
   State<VentaView> createState() => _VentaState();
 }
@@ -28,18 +30,6 @@ class _VentaState extends State<VentaView> {
   void initState() {
     super.initState();
     _Pagos();
-    _documentos();
-  }
-
-  List<Map<String, dynamic>> _documento = [];
-  void _documentos() async {
-    final data = await SQLHelperDocumentoCredito.getItems();
-    setState(() {
-      _documento =
-          data.where((element) => element['contacto_id'] == 90).toList();
-      print(_documento);
-      print(_documento.length);
-    });
   }
 
   List<String> _pagos_t = [];
@@ -50,12 +40,12 @@ class _VentaState extends State<VentaView> {
       for (var i = 0; i < data.length; i++) {
         _pagos_t.add(data[i]['nombre']);
       }
-      print(_pagos_t);
     });
   }
 
   Widget build(BuildContext context) {
-    final ProvCosto ProCosto = ProvCosto();
+    final ProCosto = Provider.of<ProvCosto>(context);
+
     List<Card> Cards = TituloCards.map(
       (card) => Card(
         elevation: 1,
@@ -77,15 +67,15 @@ class _VentaState extends State<VentaView> {
                   height: (MediaQuery.of(context).size.height /
                           MediaQuery.of(context).size.width *
                           10) *
-                      _documento.length,
+                      ProCosto.documentacion.length,
                   width: MediaQuery.of(context).size.width * 0.3,
                   alignment: Alignment.bottomCenter,
                   child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: _documento.length,
+                      itemCount: ProCosto.documentacion.length,
                       itemBuilder: (context, index) {
                         return Text(
-                          _documento[index].toString(),
+                          ProCosto.documentacion[index].toString(),
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.width * 0.035,
                             color: Colors.green,
@@ -101,7 +91,7 @@ class _VentaState extends State<VentaView> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Diego',
+            ProCosto.objContacto['nombre_completo'],
             style: TextStyle(
               color: Colors.white, // Color del texto
               fontSize:
@@ -119,7 +109,6 @@ class _VentaState extends State<VentaView> {
             child: GestureDetector(
               child: Wrap(children: Cards),
               onTap: () {
-                //_documentos();
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
