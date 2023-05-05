@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proceso_cobro/views/venta_view.dart';
+import 'package:provider/provider.dart';
 import '../models/modelo.dart';
 import '../provider/provider_costo.dart';
 import '../views/home_view.dart';
@@ -16,7 +17,6 @@ class AppRoutes {
         nombre: 'Vista_Venta',
         vista: VentaView(ProCosto: ProvCosto())),
   ];
-
   static Map<String, Widget Function(BuildContext)> getAppRutas() {
     Map<String, Widget Function(BuildContext)> appRutas = {};
 
