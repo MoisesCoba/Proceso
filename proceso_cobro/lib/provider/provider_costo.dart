@@ -2,10 +2,11 @@ import 'package:flutter/widgets.dart';
 
 class ProvCosto with ChangeNotifier {
   List<String> _pagos = [];
-  int? _contacto_id = 0;
+  int? _contacto_id = null;
   List<String> get pagos => _pagos;
 
-  set contacto_id(int? valor) {
+  int? get contactoId => this._contacto_id;
+  set contactoId(int? valor) {
     _contacto_id = valor;
     notifyListeners();
   }

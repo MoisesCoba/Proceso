@@ -8,8 +8,9 @@ import '../controllers/forma_pago_controller.dart';
 import '../provider/provider_costo.dart';
 
 class VentaView extends StatefulWidget {
-  VentaView({super.key});
-  final ProvCosto ProCosto = ProvCosto();
+  final ProvCosto ProCosto;
+  VentaView({required this.ProCosto, super.key});
+
   @override
   State<VentaView> createState() => _VentaState();
 }
@@ -79,7 +80,7 @@ class _VentaState extends State<VentaView> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Diego',
+            '${widget.ProCosto.contactoId}',
             style: TextStyle(
               color: Colors.white, // Color del texto
               fontSize:

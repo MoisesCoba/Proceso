@@ -124,7 +124,9 @@ class _HomeContenedorState extends State<HomeContenedor> {
                       autofocus: true,
                       onPressed: () {
                         print('Se tocó el botón ${contacto['id']}');
-                        ProCosto.contacto_id = contacto['id'];
+
+                        print(ProCosto.contactoId = contacto['id']);
+                        Navigator.pushNamed(context, 'Venta');
                       },
                       child: Row(
                         children: [

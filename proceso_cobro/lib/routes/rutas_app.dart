@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proceso_cobro/views/venta_view.dart';
 import '../models/modelo.dart';
+import '../provider/provider_costo.dart';
 import '../views/home_view.dart';
 import '../views/vistas.dart';
 
@@ -10,7 +11,10 @@ class AppRoutes {
   static final menuOpciones = <MenuOpcion>[
     MenuOpcion(ruta: 'login', nombre: 'Vista_Login', vista: LoginView()),
     MenuOpcion(ruta: 'Home', nombre: 'Vista_Casa', vista: HomeView()),
-    MenuOpcion(ruta: 'Venta', nombre: 'Vista_Venta', vista: VentaView()),
+    MenuOpcion(
+        ruta: 'Venta',
+        nombre: 'Vista_Venta',
+        vista: VentaView(ProCosto: ProvCosto())),
   ];
 
   static Map<String, Widget Function(BuildContext)> getAppRutas() {
