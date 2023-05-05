@@ -14,16 +14,14 @@ class PagoDialog extends StatefulWidget {
 
 class _PagoDialogState extends State<PagoDialog> {
   @override
-  String? _selectPago = "Efectivo";
+  String? _selectPago = "Por definir";
+  DateTime tiempo = DateTime.now();
   Widget build(BuildContext context) {
     print(widget.TipoPagos);
-    DateTime fechaActual = DateTime.now();
-    String _selectFecha =
-        "${fechaActual.day}/${fechaActual.month}/${fechaActual.year}";
     return SizedBox(
       height: (MediaQuery.of(context).size.width /
               MediaQuery.of(context).size.height) *
-          600,
+          650,
       child: Column(
         children: [
           Container(
@@ -105,7 +103,7 @@ class _PagoDialogState extends State<PagoDialog> {
               ),
             ),
             Text(
-              _selectFecha,
+              widget.ProCosto.DialogFecha,
               style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width * 0.04,
               ),
@@ -116,23 +114,24 @@ class _PagoDialogState extends State<PagoDialog> {
                 showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
-                  firstDate: DateTime(fechaActual.year - 5),
-                  lastDate: DateTime(fechaActual.year + 5),
+                  firstDate: DateTime(tiempo.year - 5),
+                  lastDate: DateTime(tiempo.year + 5),
                   cancelText: "Cancelar",
                   confirmText: "Confirmar",
                 ).then((fechaSeleccionada) {
                   if (fechaSeleccionada != null) {
                     setState(() {
                       final formatoFecha = fechaSeleccionada;
-                      _selectFecha =
+                      widget.ProCosto.DialogFecha =
                           "${formatoFecha.day}/${formatoFecha.month}/${formatoFecha.year}";
                     });
-                    print(_selectFecha);
+                    print(widget.ProCosto.DialogFecha);
                   }
                 });
               },
               icon: Icon(Icons.date_range,
-                  size: MediaQuery.of(context).size.width * 0.07),
+                  size: MediaQuery.of(context).size.width * 0.07,
+                  color: Colors.blue),
             ),
           ]),
           SizedBox(

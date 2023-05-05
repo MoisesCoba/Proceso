@@ -109,6 +109,9 @@ class _VentaState extends State<VentaView> {
             child: GestureDetector(
               child: Wrap(children: Cards),
               onTap: () {
+                DateTime tiempo = DateTime.now();
+                ProCosto.DialogFecha =
+                    '${tiempo.day}/${tiempo.month}/${tiempo.year}';
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
