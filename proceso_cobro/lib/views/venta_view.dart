@@ -10,9 +10,7 @@ import '../controllers/forma_pago_controller.dart';
 import '../provider/provider_costo.dart';
 
 class VentaView extends StatefulWidget {
-  final ProvCosto ProCosto;
-  VentaView({required this.ProCosto, Key? key}) : super(key: key);
-
+  VentaView({super.key});
   @override
   State<VentaView> createState() => _VentaState();
 }
@@ -45,6 +43,9 @@ class _VentaState extends State<VentaView> {
   }
 
   List<String> _pagos_t = [];
+  Future<void> _lista() async {
+    // Aquí se debe implementar la lógica para actualizar los datos de la lista
+  }
   void _Pagos() async {
     final data = await SQLHelperFormaPago.getItems();
     setState(() {
@@ -59,9 +60,9 @@ class _VentaState extends State<VentaView> {
   @override
   Widget build(BuildContext context) {
     // Usa widget.ProCosto en lugar de crear una nueva instancia de ProvCosto
-    List<Card> Cards = TituloCards.map(
-      (card) => Card(
-        elevation: 1,
+    List<Container> Containers = TituloCards.map(
+      (container) => Container(
+        //elevation: 0,
         child: Padding(
           padding: const EdgeInsets.all(14),
           child: Column(
@@ -69,32 +70,13 @@ class _VentaState extends State<VentaView> {
               Container(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  card,
+                  container,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: MediaQuery.of(context).size.width * 0.04,
                   ),
                 ),
               ),
-              Container(
-                  height: (MediaQuery.of(context).size.height /
-                          MediaQuery.of(context).size.width *
-                          10) *
-                      _documento.length,
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  alignment: Alignment.bottomCenter,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _documento.length,
-                      itemBuilder: (context, index) {
-                        return Text(
-                          _documento[index].toString(),
-                          style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * 0.035,
-                            color: Colors.green,
-                          ),
-                        );
-                      })),
             ],
           ),
         ),
@@ -102,46 +84,161 @@ class _VentaState extends State<VentaView> {
     ).toList();
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            '${widget.ProCosto.contactoId}',
-            style: TextStyle(
-              color: Colors.white, // Color del texto
-              fontSize:
-                  MediaQuery.of(context).size.width * 0.05, // Tamaño del texto
-              fontWeight: FontWeight.bold, // Grosor del texto
-            ),
+      appBar: AppBar(
+        title: Text(
+          'gg',
+          style: TextStyle(
+            color: Colors.white, // Color del texto
+            fontSize:
+                MediaQuery.of(context).size.width * 0.05, // Tamaño del texto
+            fontWeight: FontWeight.bold, // Grosor del texto
           ),
-          centerTitle: true,
-          actions: [Icon(Icons.shopping_cart_outlined)],
         ),
-        body: Container(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: BouncingScrollPhysics(),
-            child: GestureDetector(
-              child: Wrap(children: Cards),
-              onTap: () {
-                //_documentos();
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SingleChildScrollView(
-                      child: AnimatedPadding(
-                        padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom,
-                          //bottom: MediaQuery.of(context).viewInsets.left,
+        centerTitle: true,
+        actions: [Icon(Icons.shopping_cart_outlined)],
+      ),
+      body: RefreshIndicator(
+          onRefresh: _lista,
+          child: Container(
+              alignment: Alignment.center,
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                children: [
+                                  //LISTA DE COMPRAS
+                                  Wrap(
+                                    children: Containers,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      child: AnimatedList(
+                                        key: ValueKey(_documento.length),
+                                        initialItemCount: _documento.length,
+                                        itemBuilder:
+                                            (context, index, animation) {
+                                          final item = _documento[index];
+
+                                          return Dismissible(
+                                            key: Key(item.toString()),
+                                            onDismissed: (direction) {
+                                              setState(() {
+                                                _documento.removeAt(index);
+                                              });
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                content:
+                                                    Text("Producto eliminado"),
+                                              ));
+                                            },
+                                            background:
+                                                Container(color: Colors.red),
+                                            secondaryBackground: Container(
+                                              color: Colors.red,
+                                              child: Align(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: 20.0),
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    color: Colors.white,
+                                                    size: 30.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                //WIDGET PARA LA LISTA
+
+                                                ListTile(
+                                                  dense: true,
+                                                  onTap: () {
+                                                    setState(() {});
+                                                  },
+                                                  subtitle: Row(
+                                                    children: [
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: Text(
+                                                              _documento[index]
+                                                                  ['factura'])),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Center(
+                                                          child: Container(
+                                                            width: 30.0,
+                                                            height: 30.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color:
+                                                                  Colors.blue,
+                                                            ),
+                                                            child: Center(
+                                                              child: Text(
+                                                                _documento[
+                                                                        index]
+                                                                    ['factura'],
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      12.0,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                                '${_documento[index]['importe']} MXN'),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+
+                                                //Divider(thickness: 2),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            //EXPANDED DONDE ESTA LAS CATEGORIAS Y LA VISTA DE LOS PRODUCTOS
+                          ],
                         ),
-                        duration: const Duration(milliseconds: 100),
-                        child: PagoDialog(
-                            ProCosto: widget.ProCosto, TipoPagos: _pagos_t),
                       ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ));
+                    ],
+                  )),
+                ],
+              ))),
+    );
   }
 }

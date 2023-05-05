@@ -12,10 +12,7 @@ class AppRoutes {
   static final menuOpciones = <MenuOpcion>[
     MenuOpcion(ruta: 'login', nombre: 'Vista_Login', vista: LoginView()),
     MenuOpcion(ruta: 'Home', nombre: 'Vista_Casa', vista: HomeView()),
-    MenuOpcion(
-        ruta: 'Venta',
-        nombre: 'Vista_Venta',
-        vista: VentaView(ProCosto: ProvCosto())),
+    MenuOpcion(ruta: 'Venta', nombre: 'Vista_Venta', vista: VentaView()),
   ];
   static Map<String, Widget Function(BuildContext)> getAppRutas() {
     Map<String, Widget Function(BuildContext)> appRutas = {};
