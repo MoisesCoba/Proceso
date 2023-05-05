@@ -19,8 +19,8 @@ class _VentaState extends State<VentaView> {
   List<String> TituloCards = [
     "Factura",
     "Importe",
-    "Bonificacion",
-    "Pago",
+    "Bonificación",
+    "Pagado",
     "Saldo",
     "vencimiento"
   ];
@@ -115,113 +115,230 @@ class _VentaState extends State<VentaView> {
                               child: Column(
                                 children: [
                                   //LISTA DE COMPRAS
-                                  Wrap(
-                                    children: Containers,
-                                  ),
+                                  Container(
+                                      child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    physics: BouncingScrollPhysics(),
+                                    child: GestureDetector(
+                                      child: Wrap(
+                                        children: Containers,
+                                      ),
+                                    ),
+                                  )),
+                                  Divider(thickness: 2),
                                   Expanded(
                                     child: Container(
-                                      child: AnimatedList(
-                                        key: ValueKey(_documento.length),
-                                        initialItemCount: _documento.length,
-                                        itemBuilder:
-                                            (context, index, animation) {
+                                      child: ListView.builder(
+                                        itemCount: _documento.length,
+                                        itemBuilder: (context, index) {
                                           final item = _documento[index];
 
-                                          return Dismissible(
-                                            key: Key(item.toString()),
-                                            onDismissed: (direction) {
-                                              setState(() {
-                                                _documento.removeAt(index);
-                                              });
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                content:
-                                                    Text("Producto eliminado"),
-                                              ));
-                                            },
-                                            background:
-                                                Container(color: Colors.red),
-                                            secondaryBackground: Container(
-                                              color: Colors.red,
-                                              child: Align(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 20.0),
-                                                  child: Icon(
-                                                    Icons.delete,
-                                                    color: Colors.white,
-                                                    size: 30.0,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                //WIDGET PARA LA LISTA
-
-                                                ListTile(
-                                                  dense: true,
-                                                  onTap: () {
-                                                    setState(() {});
-                                                  },
-                                                  subtitle: Row(
+                                          return Column(
+                                            children: [
+                                              //WIDGET PARA LA LISTA
+                                              Container(
+                                                  child: SingleChildScrollView(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                physics:
+                                                    BouncingScrollPhysics(),
+                                                child: GestureDetector(
+                                                  child: Wrap(
                                                     children: [
-                                                      Expanded(
-                                                          flex: 2,
-                                                          child: Text(
-                                                              _documento[index]
-                                                                  ['factura'])),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Center(
-                                                          child: Container(
-                                                            width: 30.0,
-                                                            height: 30.0,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color:
-                                                                  Colors.blue,
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                _documento[
-                                                                        index]
-                                                                    ['factura'],
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  color: Colors
-                                                                      .white,
+                                                      Container(
+                                                        //elevation: 0,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(14),
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                  _documento[
+                                                                          index]
+                                                                      [
+                                                                      'factura'],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                                '${_documento[index]['importe']} MXN'),
-                                                          ],
+                                                      Container(
+                                                        //elevation: 0,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(14),
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                  _documento[
+                                                                          index]
+                                                                      [
+                                                                      'impuesto'],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        //elevation: 0,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(14),
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                  'bonificacion',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        //elevation: 0,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(14),
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                  _documento[
+                                                                          index]
+                                                                      [
+                                                                      'pagado'],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        //elevation: 0,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(14),
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                  _documento[
+                                                                          index]
+                                                                      ['saldo'],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        //elevation: 0,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(14),
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                  _documento[
+                                                                          index]
+                                                                      [
+                                                                      'vencimiento'],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ],
                                                   ),
-                                                )
-
-                                                //Divider(thickness: 2),
-                                              ],
-                                            ),
+                                                ),
+                                              )),
+                                              Divider(thickness: 2),
+                                            ],
                                           );
                                         },
                                       ),
