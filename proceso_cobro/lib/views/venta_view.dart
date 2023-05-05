@@ -9,14 +9,13 @@ import '../provider/provider_costo.dart';
 
 class VentaView extends StatefulWidget {
   final ProvCosto ProCosto;
-  VentaView({required this.ProCosto, super.key});
+  VentaView({required this.ProCosto, Key? key}) : super(key: key);
 
   @override
   State<VentaView> createState() => _VentaState();
 }
 
 class _VentaState extends State<VentaView> {
-  @override
   List<String> TituloCards = [
     "Factura",
     "Importe",
@@ -42,8 +41,9 @@ class _VentaState extends State<VentaView> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
-    final ProvCosto ProCosto = ProvCosto();
+    // Usa widget.ProCosto en lugar de crear una nueva instancia de ProvCosto
     List<Card> Cards = TituloCards.map(
       (card) => Card(
         elevation: 1,
@@ -108,8 +108,8 @@ class _VentaState extends State<VentaView> {
                           //bottom: MediaQuery.of(context).viewInsets.left,
                         ),
                         duration: const Duration(milliseconds: 100),
-                        child:
-                            PagoDialog(ProCosto: ProCosto, TipoPagos: _pagos_t),
+                        child: PagoDialog(
+                            ProCosto: widget.ProCosto, TipoPagos: _pagos_t),
                       ),
                     );
                   },
