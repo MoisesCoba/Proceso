@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:collection/collection.dart';
 
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:proceso_cobro/controllers/detalle_listacontacto_controler.dart';
 import 'package:proceso_cobro/controllers/lista_contacto_controller.dart';
 import 'package:proceso_cobro/provider/provider_costo.dart';
@@ -116,19 +117,19 @@ class _HomeContenedorState extends State<HomeContenedor> {
               contactos.add(contacto);
             }
           }
-
-          List<Widget> chipsList = [];
-
+          List<Widget> botonList = [];
           if (contactos.isNotEmpty) {
-            chipsList = contactos
-                .map((contacto) => Chip(
-                      backgroundColor: Color.fromARGB(255, 141, 219, 255),
-                      elevation: 2,
-                      label: Row(
+            botonList = contactos
+                .map((contacto) => ElevatedButton(
+                      autofocus: true,
+                      onPressed: () {
+                        print('Se tocó el botón ${contacto}');
+                      },
+                      child: Row(
                         children: [
                           Icon(Icons.account_circle),
                           SizedBox(
-                              width: 8), // Espacio entre el icono y el texto
+                              width: MediaQuery.of(context).size.width * 0.035),
                           Text(contacto['nombre_completo'],
                               style: TextStyle(
                                   fontSize: MediaQuery.of(context).size.width *
@@ -138,9 +139,8 @@ class _HomeContenedorState extends State<HomeContenedor> {
                     ))
                 .toList();
           } else {
-            chipsList.add(Text('No hay contactos para esta lista'));
+            botonList.add(Text('No hay contactos para esta lista'));
           }
-
           return ExpansionTile(
             leading: Icon(Icons.list),
             title: Text(
@@ -149,10 +149,10 @@ class _HomeContenedorState extends State<HomeContenedor> {
                 fontSize: MediaQuery.of(context).size.width * 0.05,
               ),
             ),
+            backgroundColor: Colors.grey[50],
             children: <Widget>[
               Column(
-                verticalDirection: VerticalDirection.up,
-                children: chipsList,
+                children: botonList,
               )
             ],
           );

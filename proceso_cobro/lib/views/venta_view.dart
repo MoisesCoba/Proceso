@@ -16,11 +16,6 @@ class VentaView extends StatefulWidget {
 
 class _VentaState extends State<VentaView> {
   @override
-  void initState() {
-    super.initState();
-    _Pagos();
-  }
-
   List<String> TituloCards = [
     "Factura",
     "Importe",
@@ -29,22 +24,28 @@ class _VentaState extends State<VentaView> {
     "Saldo",
     "Vencimiento"
   ];
+  void initState() {
+    super.initState();
+    _Pagos();
+  }
+
+  List<String> _pagos_t = [];
+  void _Pagos() async {
+    final data = await SQLHelperFormaPago.getItems();
+    setState(() {
+      _pagos_t.clear();
+      for (var i = 0; i < data.length; i++) {
+        _pagos_t.add(data[i]['nombre']);
+      }
+      print(_pagos_t);
+    });
+  }
+
   Widget build(BuildContext context) {
     final ProvCosto ProCosto = ProvCosto();
-    List<Map<String, dynamic>> _pagos = [];
-    void _Pagos() async {
-      final data = await SQLHelperFormaPago.getItems();
-      setState(() {
-        _pagos = data;
-        for (var i = 0; i < _pagos.length; i++){
-          ProCosto.pagos =};
-        print(_pagos);
-      });
-    }
-
     List<Card> Cards = TituloCards.map(
       (card) => Card(
-        elevation: 2,
+        elevation: 1,
         child: Padding(
           padding: const EdgeInsets.all(14),
           child: Column(
@@ -92,13 +93,24 @@ class _VentaState extends State<VentaView> {
         body: Container(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
+            physics: BouncingScrollPhysics(),
             child: GestureDetector(
               child: Wrap(children: Cards),
               onTap: () {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return PagoDialog(ProCosto: ProCosto);
+                    return SingleChildScrollView(
+                      child: AnimatedPadding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                          //bottom: MediaQuery.of(context).viewInsets.left,
+                        ),
+                        duration: const Duration(milliseconds: 100),
+                        child:
+                            PagoDialog(ProCosto: ProCosto, TipoPagos: _pagos_t),
+                      ),
+                    );
                   },
                 );
               },

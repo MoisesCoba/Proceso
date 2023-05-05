@@ -5,19 +5,23 @@ import '../provider/provider_costo.dart';
 
 class PagoDialog extends StatefulWidget {
   final ProvCosto ProCosto;
+  List<String> TipoPagos;
 
-  PagoDialog(
-      {required this.ProCosto});
+  PagoDialog({required this.ProCosto, required this.TipoPagos});
   @override
   _PagoDialogState createState() => _PagoDialogState();
 }
+
 class _PagoDialogState extends State<PagoDialog> {
   @override
-    String? _selectedPago = "Tarjeta";
-  List<String> _pagoMetodo = ["Tarjeta", "Efectivo", "Bono"];
+  String? _selectPago = "Efectivo";
   Widget build(BuildContext context) {
+    print(widget.TipoPagos);
+    DateTime fechaActual = DateTime.now();
+    String _selectFecha =
+        "${fechaActual.day}/${fechaActual.month}/${fechaActual.year}";
     return SizedBox(
-      height: 200,
+      height: MediaQuery.of(context).size.height * 0.4,
       child: Column(
         children: [
           Container(
@@ -27,26 +31,120 @@ class _PagoDialogState extends State<PagoDialog> {
               'Saldo Actual \$',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: MediaQuery.of(context).size.width * 0.05,
               ),
             ),
           ),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Text(
+                    'Forma de pago: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.width * 0.04,
+                    ),
+                  )),
               DropdownButton<String>(
-                value: _selectedPago,
-                items: _pagoMetodo.map((String value) {
+                value: _selectPago,
+                items: widget.TipoPagos.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
-                onChanged: (value) {},
+                onChanged: (value) {
+                  setState(() {
+                    _selectPago = value;
+                  });
+                },
               ),
             ],
-          )
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Padding(
+              padding: EdgeInsets.all(4),
+              child: Text(
+                'Referencia: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.width * 0.04,
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: TextFormField(),
+            ),
+          ]),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.02,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: Text(
+                'Fecha: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.width * 0.04,
+                ),
+              ),
+            ),
+            Text(
+              _selectFecha,
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.04,
+              ),
+            ),
+            IconButton(
+              tooltip: "Selecccione la fecha actual",
+              onPressed: () {
+                showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(fechaActual.year - 5),
+                  lastDate: DateTime(fechaActual.year + 5),
+                  cancelText: "Cancelar",
+                  confirmText: "Confirmar",
+                ).then((fechaSeleccionada) {
+                  if (fechaSeleccionada != null) {
+                    setState(() {
+                      final formatoFecha = fechaSeleccionada;
+                      _selectFecha =
+                          "${formatoFecha.day}/${formatoFecha.month}/${formatoFecha.year}";
+                    });
+                    print(_selectFecha);
+                  }
+                });
+              },
+              icon: Icon(Icons.date_range,
+                  size: MediaQuery.of(context).size.width * 0.07),
+            ),
+          ]),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.04,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: Text(
+                'Total: \$',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.width * 0.05,
+                ),
+              ),
+            ),
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.local_print_shop,
+                  size: MediaQuery.of(context).size.width * 0.09 ,
+                ))
+          ])
         ],
       ),
     );
