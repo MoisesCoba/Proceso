@@ -123,7 +123,8 @@ class _HomeContenedorState extends State<HomeContenedor> {
                 .map((contacto) => ElevatedButton(
                       autofocus: true,
                       onPressed: () {
-                        print('Se tocó el botón ${contacto}');
+                        print('Se tocó el botón ${contacto['id']}');
+                        ProCosto.contacto_id = contacto['id'];
                       },
                       child: Row(
                         children: [
