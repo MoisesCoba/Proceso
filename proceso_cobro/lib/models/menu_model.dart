@@ -6,4 +6,6 @@ class MenuOpcion {
   final Widget vista;
 
   MenuOpcion({required this.ruta, required this.nombre, required this.vista});
+
+  static proCosto(BuildContext context) {}
 }

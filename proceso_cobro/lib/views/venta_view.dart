@@ -2,6 +2,8 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:proceso_cobro/controllers/documento_credito_controller.dart';
+import 'package:provider/provider.dart';
 
 import '../Dialogs/dialog_pago.dart';
 import '../controllers/forma_pago_controller.dart';
@@ -9,24 +11,35 @@ import '../provider/provider_costo.dart';
 
 class VentaView extends StatefulWidget {
   VentaView({super.key});
-  final ProvCosto ProCosto = ProvCosto();
   @override
   State<VentaView> createState() => _VentaState();
 }
 
 class _VentaState extends State<VentaView> {
-  @override
   List<String> TituloCards = [
     "Factura",
     "Importe",
     "Bonificacion",
     "Pago",
     "Saldo",
-    "Vencimiento"
+    "vencimiento"
   ];
+  @override
   void initState() {
     super.initState();
     _Pagos();
+    _documentos();
+  }
+
+  List<Map<String, dynamic>> _documento = [];
+  void _documentos() async {
+    final data = await SQLHelperDocumentoCredito.getItems();
+    setState(() {
+      _documento =
+          data.where((element) => element['contacto_id'] == 90).toList();
+      print(_documento);
+      print(_documento.length);
+    });
   }
 
   List<String> _pagos_t = [];
@@ -60,16 +73,25 @@ class _VentaState extends State<VentaView> {
                   ),
                 ),
               ),
-              SizedBox(height: 8),
-              Align(
+              Container(
+                  height: (MediaQuery.of(context).size.height /
+                          MediaQuery.of(context).size.width *
+                          10) *
+                      _documento.length,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   alignment: Alignment.bottomCenter,
-                  child: Text(
-                    '\$5000',
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.035,
-                      color: Colors.green,
-                    ),
-                  ))
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _documento.length,
+                      itemBuilder: (context, index) {
+                        return Text(
+                          _documento[index].toString(),
+                          style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.035,
+                            color: Colors.green,
+                          ),
+                        );
+                      })),
             ],
           ),
         ),
@@ -97,6 +119,7 @@ class _VentaState extends State<VentaView> {
             child: GestureDetector(
               child: Wrap(children: Cards),
               onTap: () {
+                //_documentos();
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {

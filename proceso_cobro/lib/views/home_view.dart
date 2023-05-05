@@ -69,6 +69,19 @@ class _HomeContenedorState extends State<HomeContenedor> {
     });
   }
 
+  Future<void> _lista() async {
+    // Aquí se debe implementar la lógica para actualizar los datos de la lista
+    await Future.delayed(
+        Duration(seconds: 1)); // Simula una operación asíncrona de 1 segundos
+    setState(() {
+      // Actualiza los datos de la listaid
+      print("entro");
+      _refreshListaDetalles();
+      _refreshContactos();
+      _refreshListaContactos();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final ProCosto = Provider.of<ProvCosto>(context);
@@ -96,67 +109,73 @@ class _HomeContenedorState extends State<HomeContenedor> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, 'Venta');
+                Navigator.pushNamed(context,'Venta');
               },
               icon: const Icon(Icons.navigate_next)),
         ],
       ),
-      body: ListView.builder(
-        itemCount: _elementos.length,
-        itemBuilder: (context, index) {
-          List<Map<String, dynamic>> detalles = _detalles
-              .where((detalle) =>
-                  detalle['lista_contacto_id'] == _elementos[index]['id'])
-              .toList();
-          List<Map<String, dynamic>> contactos = [];
-
-          for (Map<String, dynamic> detalle in detalles) {
-            Map<String, dynamic>? contacto = _contactos.firstWhereOrNull(
-                (contacto) => contacto['id'] == detalle['contacto_id']);
-            if (contacto != null) {
-              contactos.add(contacto);
-            }
-          }
-          List<Widget> botonList = [];
-          if (contactos.isNotEmpty) {
-            botonList = contactos
-                .map((contacto) => ElevatedButton(
-                      autofocus: true,
-                      onPressed: () {
-                        print('Se tocó el botón ${contacto}');
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.account_circle),
-                          SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.035),
-                          Text(contacto['nombre_completo'],
-                              style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width *
-                                      0.035)),
-                        ],
-                      ),
-                    ))
+      body: RefreshIndicator(
+        onRefresh: _lista,
+        child: ListView.builder(
+          itemCount: _elementos.length,
+          itemBuilder: (context, index) {
+            List<Map<String, dynamic>> detalles = _detalles
+                .where((detalle) =>
+                    detalle['lista_contacto_id'] == _elementos[index]['id'])
                 .toList();
-          } else {
-            botonList.add(Text('No hay contactos para esta lista'));
-          }
-          return ExpansionTile(
-            leading: Icon(Icons.list),
-            title: Text(
-              _elementos[index]['nombre'],
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.05,
+            List<Map<String, dynamic>> contactos = [];
+
+            for (Map<String, dynamic> detalle in detalles) {
+              Map<String, dynamic>? contacto = _contactos.firstWhereOrNull(
+                  (contacto) => contacto['id'] == detalle['contacto_id']);
+              if (contacto != null) {
+                contactos.add(contacto);
+              }
+            }
+            List<Widget> botonList = [];
+            if (contactos.isNotEmpty) {
+              botonList = contactos
+                  .map((contacto) => ElevatedButton(
+                        autofocus: true,
+                        onPressed: () {
+                          ProCosto.idContacto = contacto['id'];
+                          print(ProCosto.idContacto);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.account_circle),
+                            SizedBox(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.035),
+                            Text(contacto['nombre_completo'],
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.035)),
+                          ],
+                        ),
+                      ))
+                  .toList();
+            } else {
+              botonList.add(Text('No hay contactos para esta lista'));
+            }
+            return ExpansionTile(
+              leading: Icon(Icons.list),
+              title: Text(
+                _elementos[index]['nombre'],
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.05,
+                ),
               ),
-            ),
-            backgroundColor: Colors.grey[50],
-            children: <Widget>[
-              Column(
-                children: botonList,
-              )
-            ],
-          );
-        },
+              backgroundColor: Colors.grey[50],
+              children: <Widget>[
+                Column(
+                  children: botonList,
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }
