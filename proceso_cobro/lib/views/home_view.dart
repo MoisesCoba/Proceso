@@ -129,7 +129,7 @@ class HomeViewState extends State<HomeView> {
                                   .toList();
                             });
 
-                            Navigator.pushNamed(context, 'Venta');
+                            Navigator.pushNamed(context, 'cobro');
                           },
                           child: Row(
                             children: [
