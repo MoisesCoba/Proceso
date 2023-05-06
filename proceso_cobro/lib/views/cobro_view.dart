@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:proceso_cobro/controllers/documento_credito_controller.dart';
+import 'package:proceso_cobro/widgets/factura_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../Dialogs/dialog_pago.dart';
@@ -28,7 +29,7 @@ class _CobroState extends State<CobroView> {
   @override
   void initState() {
     super.initState();
-    _Pagos();
+
     _documentos();
   }
 
@@ -43,19 +44,8 @@ class _CobroState extends State<CobroView> {
     });
   }
 
-  List<String> _pagos_t = [];
   Future<void> _lista() async {
     // Aquí se debe implementar la lógica para actualizar los datos de la lista
-  }
-  void _Pagos() async {
-    final data = await SQLHelperFormaPago.getItems();
-    setState(() {
-      _pagos_t.clear();
-      for (var i = 0; i < data.length; i++) {
-        _pagos_t.add(data[i]['nombre']);
-      }
-      print(_pagos_t);
-    });
   }
 
   @override
@@ -146,8 +136,7 @@ class _CobroState extends State<CobroView> {
                                                               const Duration(
                                                                   milliseconds:
                                                                       100),
-                                                          child: PagoDialog(
-                                                              indice: index,
+                                                          child: PagoDialog(indice: index,
                                                               ProCosto:
                                                                   ProCosto,
                                                               TipoPagos:
@@ -222,7 +211,7 @@ class _CobroState extends State<CobroView> {
                                                                 alignment: Alignment
                                                                     .bottomRight,
                                                                 child: Text(
-                                                                  'Saldo: ${double.parse(ProCosto.DocSaldo[index]).toStringAsFixed(2)} MXN',
+                                                                  'Saldo: ${double.parse(ProCosto.documentacion[index]['saldo']).toStringAsFixed(2)} MXN',
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -267,7 +256,7 @@ class _CobroState extends State<CobroView> {
                                                                 alignment: Alignment
                                                                     .bottomRight,
                                                                 child: Text(
-                                                                  'Pagado: ${double.parse(ProCosto.DocPago[index]).toStringAsFixed(2)} MXN',
+                                                                  'Pagado: ${double.parse(ProCosto.documentacion[index]['pagado']).toStringAsFixed(2)} MXN',
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
