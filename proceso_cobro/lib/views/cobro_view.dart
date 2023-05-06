@@ -122,6 +122,7 @@ class _CobroState extends State<CobroView> {
                                             children: [
                                               InkWell(
                                                 onTap: () {
+                                                  print(index);
                                                   DateTime tiempo =
                                                       DateTime.now();
                                                   ProCosto.DialogFecha =
@@ -145,7 +146,7 @@ class _CobroState extends State<CobroView> {
                                                               const Duration(
                                                                   milliseconds:
                                                                       100),
-                                                          child: PagoDialog(
+                                                          child: PagoDialog(indice: index,
                                                               ProCosto:
                                                                   ProCosto,
                                                               TipoPagos:
