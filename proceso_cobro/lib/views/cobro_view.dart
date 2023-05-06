@@ -100,7 +100,209 @@ class _CobroState extends State<CobroView> {
                                     ),
                                   ),
                                   Expanded(
+<<<<<<< HEAD
                                     child: Container(child: FacturaWidget()),
+=======
+                                    child: Container(
+                                      child: ListView.builder(
+                                        itemCount:
+                                            ProCosto.documentacion.length,
+                                        itemBuilder: (context, index) {
+                                          final item =
+                                              ProCosto.documentacion[index];
+
+                                          return Column(
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  print(index);
+                                                  DateTime tiempo =
+                                                      DateTime.now();
+                                                  ProCosto.DialogFecha =
+                                                      '${tiempo.day}/${tiempo.month}/${tiempo.year}';
+                                                  showModalBottomSheet(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return SingleChildScrollView(
+                                                        child: AnimatedPadding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            bottom:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .viewInsets
+                                                                    .bottom,
+                                                            //bottom: MediaQuery.of(context).viewInsets.left,
+                                                          ),
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      100),
+                                                          child: PagoDialog(indice: index,
+                                                              ProCosto:
+                                                                  ProCosto,
+                                                              TipoPagos:
+                                                                  _pagos_t),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Card(
+                                                  elevation: 1,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        left: BorderSide(
+                                                            width: 5.0,
+                                                            color: Colors.blue),
+                                                      ),
+                                                    ),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            14),
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          alignment: Alignment
+                                                              .bottomLeft,
+                                                          child: Text(
+                                                            'Vencimiento: ${ProCosto.documentacion[index]['vencimiento']}',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.04,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        top: 3,
+                                                                        bottom:
+                                                                            3),
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                  '${ProCosto.documentacion[index]['factura']}',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: Container(
+                                                                alignment: Alignment
+                                                                    .bottomRight,
+                                                                child: Text(
+                                                                  'Saldo: ${double.parse(ProCosto.documentacion[index]['saldo']).toStringAsFixed(2)} MXN',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Divider(thickness: 2),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: Container(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                  'Bonificación',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: Container(
+                                                                alignment: Alignment
+                                                                    .bottomRight,
+                                                                child: Text(
+                                                                  'Pagado: ${double.parse(ProCosto.documentacion[index]['pagado']).toStringAsFixed(2)} MXN',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.04,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Container(
+                                                          alignment: Alignment
+                                                              .bottomLeft,
+                                                          child: Text(
+                                                            'Impuesto: ${double.parse(ProCosto.documentacion[index]['impuesto']).toStringAsFixed(2)} MXN',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.04,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ),
+>>>>>>> 4111a6e70705d65cf648233c1716ec79da816b7b
                                   ),
                                 ],
                               ),

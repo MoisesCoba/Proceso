@@ -8,7 +8,7 @@ import '../views/home_view.dart';
 import '../views/vistas.dart';
 
 class AppRoutes {
-  static const rutaInicial = 'Home';
+  static const rutaInicial = 'cobro';
 
   static final menuOpciones = <MenuOpcion>[
     MenuOpcion(ruta: 'login', nombre: 'Vista_Login', vista: LoginView()),
