@@ -5,7 +5,11 @@ class ProvCosto with ChangeNotifier {
   List<String> _pagos = [];
   Map<String, dynamic> _Contacto = {};
   List<Map<String, dynamic>> _documentacion = [];
-   String _DialogFecha = "";
+  String _DialogFecha = "";
+  double _numeroFomato = 0;
+  String _Formateado = '';
+  List<String> _DocSaldo = [];
+  List<String> _DocPago = [];
 
   List<String> get pagos => _pagos;
   set pagos(List<String> valor) {
@@ -28,6 +32,26 @@ class ProvCosto with ChangeNotifier {
   String get DialogFecha => _DialogFecha;
   set DialogFecha(String valor) {
     _DialogFecha = valor;
+    notifyListeners();
+  }
+
+  double get numeroFormato => _numeroFomato;
+  String get Formateado => _Formateado;
+  set numeroFormato(double valor) {
+    _numeroFomato = valor;
+    _Formateado = NumberFormat('#,##0.##').format(_numeroFomato);
+    notifyListeners();
+  }
+
+  List<String> get DocSaldo => _DocSaldo;
+  set DocSaldo(List<String> valor) {
+    _DocSaldo = valor;
+    notifyListeners();
+  }
+
+  List<String> get DocPago => _DocPago;
+  set DocPago(List<String> valor) {
+    _DocPago = valor;
     notifyListeners();
   }
 }

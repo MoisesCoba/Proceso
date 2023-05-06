@@ -118,7 +118,6 @@ class HomeViewState extends State<HomeView> {
                     .map((contacto) => ElevatedButton(
                           autofocus: true,
                           onPressed: () async {
-                            print(contacto['id']);
                             final data =
                                 await SQLHelperDocumentoCredito.getItems();
                             setState(() {
@@ -128,7 +127,17 @@ class HomeViewState extends State<HomeView> {
                                       element['contacto_id'] == contacto['id'])
                                   .toList();
                             });
-
+                            ProCosto.DocSaldo.clear();
+                            ProCosto.DocPago.clear();
+                            for (var i = 0;
+                                i < ProCosto.documentacion.length;
+                                i++) {
+                              ProCosto.DocSaldo.add(
+                                  ProCosto.documentacion[i]['saldo']);
+                              ProCosto.DocPago.add(
+                                  ProCosto.documentacion[i]['pagado']);
+                            }
+                            print(ProCosto.DocSaldo);
                             Navigator.pushNamed(context, 'cobro');
                           },
                           child: Row(

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../provider/provider_costo.dart';
+import 'dialog_calculadora.dart';
 
 class PagoDialog extends StatefulWidget {
   final ProvCosto ProCosto;
@@ -23,7 +24,12 @@ class _PagoDialogState extends State<PagoDialog> {
   String? _selectPago = "Por definir";
   DateTime tiempo = DateTime.now();
   Widget build(BuildContext context) {
-    print(widget.indice);
+    void close() {
+      setState(() {
+        widget.ProCosto.notifyListeners();
+      });
+    }
+
     return SizedBox(
       height: (MediaQuery.of(context).size.width /
               MediaQuery.of(context).size.height) *
@@ -34,7 +40,7 @@ class _PagoDialogState extends State<PagoDialog> {
             alignment: Alignment.centerRight,
             padding: EdgeInsets.all(8),
             child: Text(
-              'Saldo Actual \$${widget.ProCosto.documentacion[widget.indice]['saldo']}',
+              'Saldo Actual \$${widget.ProCosto.DocSaldo[widget.indice]}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: MediaQuery.of(context).size.width * 0.05,
@@ -59,7 +65,7 @@ class _PagoDialogState extends State<PagoDialog> {
                   iconEnabledColor: Colors.blue,
                   itemHeight: null,
                   icon: Icon(Icons.payments,
-                      size: MediaQuery.of(context).size.width * 0.07),
+                      size: MediaQuery.of(context).size.width * 0.05),
                   value: _selectPago,
                   items: widget.TipoPagos.map((String value) {
                     return DropdownMenuItem<String>(
@@ -93,10 +99,11 @@ class _PagoDialogState extends State<PagoDialog> {
             Flexible(
                 flex: 1,
                 child: TextFormField(
-                    decoration: InputDecoration(
-                        hintText:
-                            '${widget.ProCosto.documentacion[widget.indice]['factura']}'),
-                    onEditingComplete: () {})),
+                  decoration: InputDecoration(
+                      hintText:
+                          '${widget.ProCosto.documentacion[widget.indice]['factura']}'),
+                  readOnly: true,
+                )),
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Padding(
@@ -116,7 +123,7 @@ class _PagoDialogState extends State<PagoDialog> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 5),
+              padding: EdgeInsets.only(right: 10),
               child: IconButton(
                 tooltip: "Seleccione la fecha actual",
                 onPressed: () {
@@ -148,7 +155,7 @@ class _PagoDialogState extends State<PagoDialog> {
             Padding(
               padding: const EdgeInsets.all(10),
               child: Text(
-                'Total: \$',
+                'Total: \$${double.parse(widget.ProCosto.DocPago[widget.indice]).toStringAsFixed(2)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: MediaQuery.of(context).size.width * 0.05,
@@ -156,9 +163,58 @@ class _PagoDialogState extends State<PagoDialog> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 5),
+              padding: EdgeInsets.only(right: 10),
               child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    widget.ProCosto.numeroFormato = 0;
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Draggable(
+                          feedback: Container(),
+                          child: AlertDialog(
+                            backgroundColor: Colors.black,
+                            titlePadding: EdgeInsets.zero,
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppBar(
+                                  backgroundColor:
+                                      Color.fromARGB(31, 94, 92, 92),
+                                  toolbarHeight:
+                                      MediaQuery.of(context).size.height * 0.04,
+                                  title: Text(
+                                    'Calculadora',
+                                    style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.04),
+                                  ),
+                                  automaticallyImplyLeading: false,
+                                  actions: [
+                                    IconButton(
+                                      icon: Icon(Icons.close_outlined,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.04),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              CalculadoraDialog(
+                                  indice: widget.indice,
+                                  ProCosto: widget.ProCosto,
+                                  Close: close),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
                   tooltip: 'Pagar',
                   icon: Icon(
                     Icons.payments_outlined,

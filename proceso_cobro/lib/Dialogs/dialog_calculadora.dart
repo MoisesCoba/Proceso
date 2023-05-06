@@ -3,12 +3,12 @@ import 'package:proceso_cobro/provider/provider_costo.dart';
 import 'package:provider/provider.dart';
 
 class CalculadoraDialog extends StatefulWidget {
-  final ProvCosto ProNavegacion;
+  final ProvCosto ProCosto;
   final int indice;
-  final Function() close;
+  final Function() Close;
 
   CalculadoraDialog(
-      {required this.ProNavegacion, required this.indice, required this.close});
+      {required this.ProCosto, required this.indice, required this.Close});
   @override
   _CalculadoraDialogState createState() => _CalculadoraDialogState();
 }
@@ -20,26 +20,18 @@ class _CalculadoraDialogState extends State<CalculadoraDialog> {
     setState(() {
       if (buttonText == "AC") {
         resultado = "0";
-        //widget.ProNavegacion.numeroFormato = 0.0;
+        widget.ProCosto.numeroFormato = 0.0;
       } else if (buttonText == "OK") {
-        //widget.ProNavegacion.importe[widget.indice] =
-            //widget.ProNavegacion.numeroFormato;
-        //widget.ProNavegacion.abono = 0;
-        //for (var i = 0; i < widget.ProNavegacion.importe.length; i++) {
-          //widget.ProNavegacion.abono += widget.ProNavegacion.importe[i];
-        //}
-        //widget.ProNavegacion.cambio =
-            //widget.ProNavegacion.abono - widget.ProNavegacion.total;
-
+        widget.ProCosto.DocPago[widget.indice] = resultado;
         Navigator.pop(context);
-        widget.close();
+        widget.Close();
       } else if (buttonText == "DEL") {
         // verificar si se presionó "borrar"
         resultado = resultado.substring(
             0, resultado.length - 1); // eliminar último carácter
         if (resultado.isEmpty)
           resultado = "0"; // si la cadena está vacía, establecer en "0"
-        //widget.ProNavegacion.numeroFormato = double.parse(resultado);
+        widget.ProCosto.numeroFormato = double.parse(resultado);
       } else if (buttonText == ".") {
         if (resultado.contains('.')) {
           print("La variable contiene al menos un punto.");
@@ -48,7 +40,7 @@ class _CalculadoraDialogState extends State<CalculadoraDialog> {
         }
       } else {
         resultado = (resultado == "0") ? buttonText : resultado + buttonText;
-        //widget.ProNavegacion.numeroFormato = double.parse(resultado);
+        widget.ProCosto.numeroFormato = double.parse(resultado);
       }
     });
   }
@@ -71,15 +63,15 @@ class _CalculadoraDialogState extends State<CalculadoraDialog> {
   Widget _buildButton(String buttonText, {Color? color}) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.002),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.005),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: color ??
                 Color.fromARGB(255, 63, 63,
                     63), // Cambia el color predeterminado a gris si no se proporciona un color
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
             textStyle:
-                TextStyle(fontSize: MediaQuery.of(context).size.width * 0.015),
+                TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
           ),
           child: Text(
             buttonText,
@@ -98,15 +90,15 @@ class _CalculadoraDialogState extends State<CalculadoraDialog> {
     return Expanded(
       flex: 2,
       child: Padding(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.002),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.005),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: color ??
                 Color.fromARGB(255, 63, 63,
                     63), // Cambia el color predeterminado a gris si no se proporciona un color
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
             textStyle:
-                TextStyle(fontSize: MediaQuery.of(context).size.width * 0.015),
+                TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
           ),
           child: Text(
             buttonText,
@@ -152,16 +144,12 @@ class _CalculadoraDialogState extends State<CalculadoraDialog> {
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height * 0.09,
-            width: MediaQuery.of(context).size.width * 0.3,
+            width: MediaQuery.of(context).size.width * 0.7,
             alignment: Alignment.centerRight,
-            padding: EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: MediaQuery.of(context).size.width * 0.005),
             child: Text(
-              '0',
-              //widget.ProNavegacion.Formateado,
+              widget.ProCosto.Formateado,
               style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.035,
+                  fontSize: MediaQuery.of(context).size.width * 0.08,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),

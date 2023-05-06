@@ -146,7 +146,8 @@ class _CobroState extends State<CobroView> {
                                                               const Duration(
                                                                   milliseconds:
                                                                       100),
-                                                          child: PagoDialog(indice: index,
+                                                          child: PagoDialog(
+                                                              indice: index,
                                                               ProCosto:
                                                                   ProCosto,
                                                               TipoPagos:
@@ -221,7 +222,7 @@ class _CobroState extends State<CobroView> {
                                                                 alignment: Alignment
                                                                     .bottomRight,
                                                                 child: Text(
-                                                                  'Saldo: ${double.parse(ProCosto.documentacion[index]['saldo']).toStringAsFixed(2)} MXN',
+                                                                  'Saldo: ${double.parse(ProCosto.DocSaldo[index]).toStringAsFixed(2)} MXN',
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -266,7 +267,7 @@ class _CobroState extends State<CobroView> {
                                                                 alignment: Alignment
                                                                     .bottomRight,
                                                                 child: Text(
-                                                                  'Pagado: ${double.parse(ProCosto.documentacion[index]['pagado']).toStringAsFixed(2)} MXN',
+                                                                  'Pagado: ${double.parse(ProCosto.DocPago[index]).toStringAsFixed(2)} MXN',
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
