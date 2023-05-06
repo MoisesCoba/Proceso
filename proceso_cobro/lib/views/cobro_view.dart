@@ -61,11 +61,11 @@ class _CobroState extends State<CobroView> {
   @override
   Widget build(BuildContext context) {
     // Usa widget.ProCosto en lugar de crear una nueva instancia de ProvCosto
-    final ProvCosto ProCosto = ProvCosto();
+    final ProCosto = Provider.of<ProvCosto>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          ProCosto.objContacto['id'].toString(),
+          ProCosto.objContacto['nombre_completo'].toString(),
           style: TextStyle(
             color: Colors.white, // Color del texto
             fontSize:
@@ -112,15 +112,48 @@ class _CobroState extends State<CobroView> {
                                   Expanded(
                                     child: Container(
                                       child: ListView.builder(
-                                        itemCount: _documento.length,
+                                        itemCount:
+                                            ProCosto.documentacion.length,
                                         itemBuilder: (context, index) {
-                                          final item = _documento[index];
+                                          final item =
+                                              ProCosto.documentacion[index];
 
                                           return Column(
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
-                                                  print('hola');
+                                                  DateTime tiempo =
+                                                      DateTime.now();
+                                                  ProCosto.DialogFecha =
+                                                      '${tiempo.day}/${tiempo.month}/${tiempo.year}';
+                                                  showModalBottomSheet(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return SingleChildScrollView(
+                                                        child: AnimatedPadding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            bottom:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .viewInsets
+                                                                    .bottom,
+                                                            //bottom: MediaQuery.of(context).viewInsets.left,
+                                                          ),
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      100),
+                                                          child: PagoDialog(
+                                                              ProCosto:
+                                                                  ProCosto,
+                                                              TipoPagos:
+                                                                  _pagos_t),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
                                                 },
                                                 child: Card(
                                                   elevation: 1,
@@ -141,7 +174,7 @@ class _CobroState extends State<CobroView> {
                                                           alignment: Alignment
                                                               .bottomLeft,
                                                           child: Text(
-                                                            'Vencimiento: ${_documento[index]['vencimiento']}',
+                                                            'Vencimiento: ${ProCosto.documentacion[index]['vencimiento']}',
                                                             style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -167,7 +200,7 @@ class _CobroState extends State<CobroView> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                  '${_documento[index]['factura']}',
+                                                                  '${ProCosto.documentacion[index]['factura']}',
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -187,7 +220,7 @@ class _CobroState extends State<CobroView> {
                                                                 alignment: Alignment
                                                                     .bottomRight,
                                                                 child: Text(
-                                                                  'Saldo: ${double.parse(_documento[index]['saldo']).toStringAsFixed(2)} MXN',
+                                                                  'Saldo: ${double.parse(ProCosto.documentacion[index]['saldo']).toStringAsFixed(2)} MXN',
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -232,7 +265,7 @@ class _CobroState extends State<CobroView> {
                                                                 alignment: Alignment
                                                                     .bottomRight,
                                                                 child: Text(
-                                                                  'Pagado: ${double.parse(_documento[index]['pagado']).toStringAsFixed(2)} MXN',
+                                                                  'Pagado: ${double.parse(ProCosto.documentacion[index]['pagado']).toStringAsFixed(2)} MXN',
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -252,7 +285,7 @@ class _CobroState extends State<CobroView> {
                                                           alignment: Alignment
                                                               .bottomLeft,
                                                           child: Text(
-                                                            'Impuestos: ${_documento[index]['impuestos']} MXN',
+                                                            'Impuesto: ${double.parse(ProCosto.documentacion[index]['impuesto']).toStringAsFixed(2)} MXN',
                                                             style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight

@@ -60,6 +60,7 @@ class _VentaState extends State<VentaView> {
   @override
   Widget build(BuildContext context) {
     // Usa widget.ProCosto en lugar de crear una nueva instancia de ProvCosto
+    final ProCosto = Provider.of<ProvCosto>(context);
     List<Container> Containers = TituloCards.map(
       (container) => Container(
         //elevation: 0,
@@ -73,7 +74,7 @@ class _VentaState extends State<VentaView> {
                   container,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.width * 0.04,
+                    fontSize: MediaQuery.of(context).size.width * 0.023,
                   ),
                 ),
               ),
@@ -86,7 +87,7 @@ class _VentaState extends State<VentaView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'gg',
+          ProCosto.objContacto['nombre_completo'].toString(),
           style: TextStyle(
             color: Colors.white, // Color del texto
             fontSize:
@@ -116,22 +117,19 @@ class _VentaState extends State<VentaView> {
                                 children: [
                                   //LISTA DE COMPRAS
                                   Container(
-                                      child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    physics: BouncingScrollPhysics(),
-                                    child: GestureDetector(
-                                      child: Wrap(
-                                        children: Containers,
-                                      ),
-                                    ),
+                                      child: Row(
+                                    children: Containers,
                                   )),
+
                                   Divider(thickness: 2),
                                   Expanded(
                                     child: Container(
                                       child: ListView.builder(
-                                        itemCount: _documento.length,
+                                        itemCount:
+                                            ProCosto.documentacion.length,
                                         itemBuilder: (context, index) {
-                                          final item = _documento[index];
+                                          final item =
+                                              ProCosto.documentacion[index];
 
                                           return Column(
                                             children: [
@@ -157,10 +155,12 @@ class _VentaState extends State<VentaView> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                  _documento[
+                                                                  ProCosto
+                                                                      .documentacion[
                                                                           index]
-                                                                      [
-                                                                      'factura'],
+                                                                          [
+                                                                          'factura']
+                                                                      .toString(),
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -169,7 +169,7 @@ class _VentaState extends State<VentaView> {
                                                                     fontSize: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
-                                                                        0.04,
+                                                                        0.023,
                                                                   ),
                                                                 ),
                                                               ),
@@ -189,10 +189,12 @@ class _VentaState extends State<VentaView> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                  _documento[
+                                                                  ProCosto
+                                                                      .documentacion[
                                                                           index]
-                                                                      [
-                                                                      'impuesto'],
+                                                                          [
+                                                                          'impuesto']
+                                                                      .toString(),
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -201,7 +203,7 @@ class _VentaState extends State<VentaView> {
                                                                     fontSize: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
-                                                                        0.04,
+                                                                        0.023,
                                                                   ),
                                                                 ),
                                                               ),
@@ -230,7 +232,7 @@ class _VentaState extends State<VentaView> {
                                                                     fontSize: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
-                                                                        0.04,
+                                                                        0.023,
                                                                   ),
                                                                 ),
                                                               ),
@@ -250,10 +252,12 @@ class _VentaState extends State<VentaView> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                  _documento[
+                                                                  ProCosto
+                                                                      .documentacion[
                                                                           index]
-                                                                      [
-                                                                      'pagado'],
+                                                                          [
+                                                                          'pagado']
+                                                                      .toString(),
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -262,7 +266,7 @@ class _VentaState extends State<VentaView> {
                                                                     fontSize: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
-                                                                        0.04,
+                                                                        0.023,
                                                                   ),
                                                                 ),
                                                               ),
@@ -282,9 +286,12 @@ class _VentaState extends State<VentaView> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                  _documento[
+                                                                  ProCosto
+                                                                      .documentacion[
                                                                           index]
-                                                                      ['saldo'],
+                                                                          [
+                                                                          'saldo']
+                                                                      .toString(),
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -293,7 +300,7 @@ class _VentaState extends State<VentaView> {
                                                                     fontSize: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
-                                                                        0.04,
+                                                                        0.023,
                                                                   ),
                                                                 ),
                                                               ),
@@ -313,19 +320,21 @@ class _VentaState extends State<VentaView> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                  _documento[
+                                                                  ProCosto
+                                                                      .documentacion[
                                                                           index]
-                                                                      [
-                                                                      'vencimiento'],
+                                                                          [
+                                                                          'vencimiento']
+                                                                      .toString(),
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .bold,
+                                                                            .normal,
                                                                     fontSize: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
-                                                                        0.04,
+                                                                        0.023,
                                                                   ),
                                                                 ),
                                                               ),

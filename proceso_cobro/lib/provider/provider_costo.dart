@@ -5,6 +5,13 @@ class ProvCosto with ChangeNotifier {
   List<String> _pagos = [];
   Map<String, dynamic> _Contacto = {};
   List<Map<String, dynamic>> _documentacion = [];
+  String _DialogFecha = "";
+
+  String get DialogFecha => _DialogFecha;
+  set DialogFecha(String valor) {
+    _DialogFecha = valor;
+    notifyListeners();
+  }
 
   List<String> get pagos => _pagos;
   set pagos(List<String> valor) {
