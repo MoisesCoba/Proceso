@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:proceso_cobro/controllers/documento_credito_controller.dart';
+import 'package:proceso_cobro/widgets/factura_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../Dialogs/dialog_pago.dart';
@@ -28,7 +29,7 @@ class _CobroState extends State<CobroView> {
   @override
   void initState() {
     super.initState();
-    _Pagos();
+
     _documentos();
   }
 
@@ -43,19 +44,8 @@ class _CobroState extends State<CobroView> {
     });
   }
 
-  List<String> _pagos_t = [];
   Future<void> _lista() async {
     // Aquí se debe implementar la lógica para actualizar los datos de la lista
-  }
-  void _Pagos() async {
-    final data = await SQLHelperFormaPago.getItems();
-    setState(() {
-      _pagos_t.clear();
-      for (var i = 0; i < data.length; i++) {
-        _pagos_t.add(data[i]['nombre']);
-      }
-      print(_pagos_t);
-    });
   }
 
   @override
@@ -110,204 +100,7 @@ class _CobroState extends State<CobroView> {
                                     ),
                                   ),
                                   Expanded(
-                                    child: Container(
-                                      child: ListView.builder(
-                                        itemCount:
-                                            ProCosto.documentacion.length,
-                                        itemBuilder: (context, index) {
-                                          final item =
-                                              ProCosto.documentacion[index];
-
-                                          return Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  DateTime tiempo =
-                                                      DateTime.now();
-                                                  ProCosto.DialogFecha =
-                                                      '${tiempo.day}/${tiempo.month}/${tiempo.year}';
-                                                  showModalBottomSheet(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return SingleChildScrollView(
-                                                        child: AnimatedPadding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                            bottom:
-                                                                MediaQuery.of(
-                                                                        context)
-                                                                    .viewInsets
-                                                                    .bottom,
-                                                            //bottom: MediaQuery.of(context).viewInsets.left,
-                                                          ),
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      100),
-                                                          child: PagoDialog(
-                                                              ProCosto:
-                                                                  ProCosto,
-                                                              TipoPagos:
-                                                                  _pagos_t),
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                                child: Card(
-                                                  elevation: 1,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                        left: BorderSide(
-                                                            width: 5.0,
-                                                            color: Colors.blue),
-                                                      ),
-                                                    ),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            14),
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          alignment: Alignment
-                                                              .bottomLeft,
-                                                          child: Text(
-                                                            'Vencimiento: ${ProCosto.documentacion[index]['vencimiento']}',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                              fontSize: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  0.04,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Expanded(
-                                                              flex: 1,
-                                                              child: Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        top: 3,
-                                                                        bottom:
-                                                                            3),
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: Text(
-                                                                  '${ProCosto.documentacion[index]['factura']}',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.04,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              flex: 1,
-                                                              child: Container(
-                                                                alignment: Alignment
-                                                                    .bottomRight,
-                                                                child: Text(
-                                                                  'Saldo: ${double.parse(ProCosto.documentacion[index]['saldo']).toStringAsFixed(2)} MXN',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.04,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Divider(thickness: 2),
-                                                        Row(
-                                                          children: [
-                                                            Expanded(
-                                                              flex: 1,
-                                                              child: Container(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: Text(
-                                                                  'Bonificación',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    fontSize: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.04,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              flex: 1,
-                                                              child: Container(
-                                                                alignment: Alignment
-                                                                    .bottomRight,
-                                                                child: Text(
-                                                                  'Pagado: ${double.parse(ProCosto.documentacion[index]['pagado']).toStringAsFixed(2)} MXN',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    fontSize: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.04,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Container(
-                                                          alignment: Alignment
-                                                              .bottomLeft,
-                                                          child: Text(
-                                                            'Impuesto: ${double.parse(ProCosto.documentacion[index]['impuesto']).toStringAsFixed(2)} MXN',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                              fontSize: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  0.04,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    ),
+                                    child: Container(child: FacturaWidget()),
                                   ),
                                 ],
                               ),
