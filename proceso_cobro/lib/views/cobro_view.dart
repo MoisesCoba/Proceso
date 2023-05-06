@@ -120,7 +120,7 @@ class _CobroState extends State<CobroView> {
 
                                           return Column(
                                             children: [
-                                              GestureDetector(
+                                              InkWell(
                                                 onTap: () {
                                                   DateTime tiempo =
                                                       DateTime.now();
