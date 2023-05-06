@@ -154,13 +154,17 @@ class HomeViewState extends State<HomeView> {
                 title: Text(
                   _elementos[index]['nombre'],
                   style: TextStyle(
+                    fontWeight: FontWeight.bold,
                     fontSize: MediaQuery.of(context).size.width * 0.05,
                   ),
                 ),
-                backgroundColor: Colors.grey[50],
+                backgroundColor: Colors.grey[100],
                 children: <Widget>[
-                  Column(
-                    children: botonList,
+                  Container(
+                    margin: EdgeInsets.only(left: 5, right: 5),
+                    child: Column(
+                      children: botonList,
+                    ),
                   )
                 ],
               );
