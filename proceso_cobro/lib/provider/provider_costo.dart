@@ -5,7 +5,14 @@ class ProvCosto with ChangeNotifier {
   List<String> _pagos = [];
   Map<String, dynamic> _Contacto = {};
   List<Map<String, dynamic>> _documentacion = [];
-   String _DialogFecha = "";
+  String _DialogFecha = "";
+  int? _listaContactoId = null;
+
+  int? get ListaContactoId => _listaContactoId;
+  set ListaContactoId(int? valor) {
+    _listaContactoId = valor;
+    notifyListeners();
+  }
 
   List<String> get pagos => _pagos;
   set pagos(List<String> valor) {

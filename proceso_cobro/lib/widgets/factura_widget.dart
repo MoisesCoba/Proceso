@@ -56,8 +56,10 @@ class _FacturaWidget extends State<FacturaWidget> {
                           //bottom: MediaQuery.of(context).viewInsets.left,
                         ),
                         duration: const Duration(milliseconds: 100),
-                        child:
-                            PagoDialog(ProCosto: ProCosto, TipoPagos: _pagos_t),
+                        child: PagoDialog(
+                            indice: index,
+                            ProCosto: ProCosto,
+                            TipoPagos: _pagos_t),
                       ),
                     );
                   },
