@@ -13,7 +13,6 @@ class ProvCosto with ChangeNotifier {
     _listaContactoId = valor;
     notifyListeners();
   }
-  String _DialogFecha = "";
   double _numeroFomato = 0;
   String _Formateado = '';
   List<String> _DocSaldo = [];
