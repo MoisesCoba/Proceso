@@ -1,6 +1,4 @@
 import 'dart:ffi';
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +6,12 @@ import '../Dialogs/dialog_pago.dart';
 import '../controllers/forma_pago_controller.dart';
 import '../provider/provider_costo.dart';
 
+import 'dart:io';
+import 'package:oktoast/oktoast.dart';
+import 'package:flutter/material.dart';
+import 'package:esc_pos_utils/esc_pos_utils.dart';
+import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CobroView extends StatefulWidget {
   CobroView({super.key});
