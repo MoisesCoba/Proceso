@@ -26,8 +26,7 @@ class HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     _refreshListaContactos();
-    _refreshContactos();
-    _refreshListaDetalles();
+
     // _refresRelacion();
   }
 
@@ -42,20 +41,6 @@ class HomeViewState extends State<HomeView> {
     });
   }
 
-  void _refreshContactos() async {
-    final data = await SQLHelperContacto.getItemsContacto();
-    setState(() {
-      _contactos = data;
-    });
-  }
-
-  void _refreshListaDetalles() async {
-    final data = await SQLHelperDetalleListaContacto.getItems();
-    setState(() {
-      _detalles = data;
-    });
-  }
-
   Future<void> _lista() async {
     // Aquí se debe implementar la lógica para actualizar los datos de la lista
     await Future.delayed(
@@ -63,8 +48,6 @@ class HomeViewState extends State<HomeView> {
     setState(() {
       // Actualiza los datos de la listaid
       print("entro");
-      _refreshListaDetalles();
-      _refreshContactos();
       _refreshListaContactos();
     });
   }
@@ -99,29 +82,15 @@ class HomeViewState extends State<HomeView> {
           child: ListView.builder(
             itemCount: _elementos.length,
             itemBuilder: (context, index) {
-              List<Map<String, dynamic>> detalles = _detalles
-                  .where((detalle) =>
-                      detalle['lista_contacto_id'] == _elementos[index]['id'])
-                  .toList();
-              List<Map<String, dynamic>> contactos = [];
+              return Column(
+                children: [
+                  ListTile(
+                    onTap: () {
+                      ProCosto.ListaContacto = _elementos[index];
 
-              for (Map<String, dynamic> detalle in detalles) {
-                Map<String, dynamic>? contacto = _contactos.firstWhereOrNull(
-                    (contacto) => contacto['id'] == detalle['contacto_id']);
-                if (contacto != null) {
-                  contactos.add(contacto);
-                }
-              }
-              List<Widget> botonList = [];
-              if (contactos.isNotEmpty) {
-                botonList = contactos
-                    .map((contacto) => ElevatedButton(
-                          autofocus: true,
-                          onPressed: () async {
-                            final data =
-                                await SQLHelperDocumentoCredito.getItems();
-                            setState(() {
-                              ProCosto.objContacto = contacto;
+                      ///final data = await SQLHelperDocumentoCredito.getItems();
+                      /*setState(() {
+                             ProCosto.objContacto = contacto;
                               ProCosto.documentacion = data
                                   .where((element) =>
                                       element['contacto_id'] == contacto['id'])
@@ -137,44 +106,25 @@ class HomeViewState extends State<HomeView> {
                               ProCosto.DocPago.add(
                                   ProCosto.documentacion[i]['pagado']);
                             }
-                            print(ProCosto.DocSaldo);
-                            Navigator.pushNamed(context, 'cobro');
-                          },
-                          child: Row(
-                            children: [
-                              Icon(Icons.account_circle),
-                              SizedBox(
-                                  width: MediaQuery.of(context).size.width *
-                                      0.035),
-                              Text(contacto['nombre_completo'],
-                                  style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.035)),
-                            ],
-                          ),
-                        ))
-                    .toList();
-              } else {
-                botonList.add(Text('No hay contactos para esta lista'));
-              }
-              return ExpansionTile(
-                leading: Icon(Icons.list),
-                title: Text(
-                  _elementos[index]['nombre'],
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.width * 0.05,
-                  ),
-                ),
-                backgroundColor: Colors.grey[100],
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(left: 5, right: 5),
-                    child: Column(
-                      children: botonList,
+                            print(ProCosto.DocSaldo);*/
+                      setState(() {
+                        Navigator.pushNamed(context, 'contacto');
+                      });
+                    },
+                    leading: Icon(
+                      Icons.list,
+                      color: Colors.blue,
                     ),
-                  )
+                    title: Text(
+                      _elementos[index]['nombre'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                    ),
+                  ),
+                  Divider(thickness: 2),
                 ],
               );
             },

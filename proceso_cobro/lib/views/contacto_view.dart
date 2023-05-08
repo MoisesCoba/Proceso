@@ -67,7 +67,7 @@ class ContactoViewState extends State<ContactoView> {
 
     List<Map<String, dynamic>> detalles = _detalles
         .where((detalle) =>
-            detalle['lista_contacto_id'] == ProCosto.ListaContactoId)
+            detalle['lista_contacto_id'] == ProCosto.ListaContacto['id'])
         .toList();
     List<Map<String, dynamic>> contactos = [];
 
@@ -87,11 +87,20 @@ class ContactoViewState extends State<ContactoView> {
                   print(contacto['id']);
                   final data = await SQLHelperDocumentoCredito.getItems();
                   setState(() {
-                    ProCosto.objContacto = contacto;
+                    ProCosto.ObjContacto = contacto;
                     ProCosto.documentacion = data
                         .where((element) =>
                             element['contacto_id'] == contacto['id'])
                         .toList();
+
+                    ProCosto.DocPago.clear();
+                    ProCosto.DocSaldo.clear();
+                    for (var i = 0; i < ProCosto.documentacion.length; i++) {
+                      print(ProCosto.documentacion[i]);
+                      ProCosto.DocPago.add(ProCosto.documentacion[i]['pagado']);
+                      ProCosto.DocSaldo.add(ProCosto.documentacion[i]['saldo']);
+                      print(ProCosto.documentacion);
+                    }
                   });
 
                   Navigator.pushNamed(context, 'cobro');
@@ -118,14 +127,23 @@ class ContactoViewState extends State<ContactoView> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Lista de contactos',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.05,
-              fontWeight: FontWeight.bold,
+          title: Column(children: [
+            Text(
+              'Lista de contactos',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: MediaQuery.of(context).size.width * 0.04,
+              ),
             ),
-          ),
+            Text(
+              '${ProCosto.ListaContacto['nombre']}',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: MediaQuery.of(context).size.width * 0.05,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ]),
           centerTitle: true,
         ),
         body: RefreshIndicator(

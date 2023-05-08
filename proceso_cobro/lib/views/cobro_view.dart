@@ -1,14 +1,13 @@
 import 'dart:ffi';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
-import 'package:proceso_cobro/controllers/documento_credito_controller.dart';
 import 'package:provider/provider.dart';
 
 import '../Dialogs/dialog_pago.dart';
 import '../controllers/forma_pago_controller.dart';
 import '../provider/provider_costo.dart';
+
 
 class CobroView extends StatefulWidget {
   CobroView({super.key});
@@ -28,19 +27,9 @@ class _CobroState extends State<CobroView> {
   @override
   void initState() {
     super.initState();
+    _requestPermissions();
+    _bluetoothPrinter = TextEditingController();
     _Pagos();
-    _documentos();
-  }
-
-  List<Map<String, dynamic>> _documento = [];
-  void _documentos() async {
-    final data = await SQLHelperDocumentoCredito.getItems();
-    setState(() {
-      _documento =
-          data.where((element) => element['contacto_id'] == 90).toList();
-      print(_documento);
-      print(_documento.length);
-    });
   }
 
   List<String> _pagos_t = [];
@@ -58,6 +47,84 @@ class _CobroState extends State<CobroView> {
     });
   }
 
+  PrinterBluetoothManager printerManager = PrinterBluetoothManager();
+  List<PrinterBluetooth> _devices = [];
+  late TextEditingController _bluetoothPrinter;
+
+  @override
+  void dispose() {
+    _bluetoothPrinter.dispose();
+    super.dispose();
+  }
+
+  Future<void> _requestPermissions() async {
+    PermissionStatus statusConnect =
+        await Permission.bluetoothConnect.request();
+    PermissionStatus statusScan = await Permission.bluetoothScan.request();
+    PermissionStatus statusLocation =
+        await Permission.locationWhenInUse.request();
+
+    if (Platform.isAndroid) {
+      if (statusLocation.isDenied) {
+        await [
+          Permission.location,
+        ].request();
+      }
+    }
+
+    if (statusLocation.isGranted &&
+        statusScan.isGranted &&
+        statusConnect.isGranted) {
+      debugPrint('all granted');
+
+      // do scan bluetooth device function
+
+      printerManager.scanResults.listen((devices) async {
+        debugPrint('UI: Devices found ${devices.length}');
+        setState(() {
+          _devices = devices;
+        });
+      });
+
+      _startScanDevices();
+    } else {
+      debugPrint('Not all permissions granted');
+    }
+  }
+
+  void _startScanDevices() {
+    setState(() {
+      _devices = [];
+    });
+    printerManager.startScan(const Duration(seconds: 5));
+  }
+
+  void _stopScanDevices() {
+    printerManager.stopScan();
+  }
+
+  void _testPrint(PrinterBluetooth printer) async {
+    printerManager.selectPrinter(printer);
+
+    //Don't forget to choose printer's paper
+    const PaperSize paper = PaperSize.mm58;
+    final CapabilityProfile profile = await CapabilityProfile.load();
+    final PosPrintResult res = await printerManager
+        .printTicket(await demoReceipt(paper, profile), queueSleepTimeMs: 100);
+
+    showToast(res.msg);
+  }
+
+  void _sendPrint(List<PrinterBluetooth> devices, String bluetoothPrinter) {
+    if (devices.isNotEmpty) {
+      for (var device in devices) {
+        if (device.name == bluetoothPrinter) {
+          _testPrint(device);
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Usa widget.ProCosto en lugar de crear una nueva instancia de ProvCosto
@@ -65,7 +132,7 @@ class _CobroState extends State<CobroView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          ProCosto.objContacto['nombre_completo'].toString(),
+          ProCosto.ObjContacto['nombre_completo'].toString(),
           style: TextStyle(
             color: Colors.white, // Color del texto
             fontSize:
@@ -326,3 +393,5 @@ class _CobroState extends State<CobroView> {
     );
   }
 }
+
+class PrinterBluetooth {}

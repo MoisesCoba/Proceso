@@ -3,20 +3,15 @@ import 'package:intl/intl.dart';
 
 class ProvCosto with ChangeNotifier {
   List<String> _pagos = [];
-  Map<String, dynamic> _Contacto = {};
+  Map<String, dynamic> _ListaContacto = {};
   List<Map<String, dynamic>> _documentacion = [];
   String _DialogFecha = "";
-  int? _listaContactoId = null;
-
-  int? get ListaContactoId => _listaContactoId;
-  set ListaContactoId(int? valor) {
-    _listaContactoId = valor;
-    notifyListeners();
-  }
   double _numeroFomato = 0;
   String _Formateado = '';
   List<String> _DocSaldo = [];
   List<String> _DocPago = [];
+
+  Map<String, dynamic> _objContacto = {};
 
   List<String> get pagos => _pagos;
   set pagos(List<String> valor) {
@@ -24,9 +19,14 @@ class ProvCosto with ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic> get objContacto => _Contacto;
-  set objContacto(Map<String, dynamic> valor) {
-    _Contacto = valor;
+  Map<String, dynamic> get ListaContacto => _ListaContacto;
+  set ListaContacto(Map<String, dynamic> valor) {
+    _ListaContacto = valor;
+    notifyListeners();
+  }
+  Map<String, dynamic> get ObjContacto => _objContacto;
+  set ObjContacto(Map<String, dynamic> valor) {
+    _objContacto = valor;
     notifyListeners();
   }
 

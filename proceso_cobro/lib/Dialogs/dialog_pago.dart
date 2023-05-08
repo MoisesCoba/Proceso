@@ -15,6 +15,8 @@ class PagoDialog extends StatefulWidget {
       required this.indice,
       required this.ProCosto,
       required this.TipoPagos});
+
+      
   @override
   _PagoDialogState createState() => _PagoDialogState();
 }
@@ -226,7 +228,53 @@ class _PagoDialogState extends State<PagoDialog> {
           Padding(
             padding: EdgeInsets.only(top: 10),
             child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+
+                  /*showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Draggable(
+                          feedback: Container(),
+                          child: AlertDialog(
+                            titlePadding: EdgeInsets.zero,
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppBar(
+                                  toolbarHeight:
+                                      MediaQuery.of(context).size.height * 0.04,
+                                  title: Text(
+                                    'Impresora',
+                                    style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.04),
+                                  ),
+                                  automaticallyImplyLeading: false,
+                                  actions: [
+                                    IconButton(
+                                      icon: Icon(Icons.close_outlined,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.04),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              CalculadoraDialog(
+                                  indice: widget.indice,
+                                  ProCosto: widget.ProCosto,
+                                  Close: close),
+                            ],
+                          ),
+                        );
+                      },
+                    );*/
+                },
                 tooltip: 'Imprimir ticket',
                 icon: Icon(
                   Icons.print,

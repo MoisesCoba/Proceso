@@ -28,18 +28,6 @@ class _VentaState extends State<VentaView> {
   void initState() {
     super.initState();
     _Pagos();
-    _documentos();
-  }
-
-  List<Map<String, dynamic>> _documento = [];
-  void _documentos() async {
-    final data = await SQLHelperDocumentoCredito.getItems();
-    setState(() {
-      _documento =
-          data.where((element) => element['contacto_id'] == 90).toList();
-      print(_documento);
-      print(_documento.length);
-    });
   }
 
   List<String> _pagos_t = [];
@@ -87,7 +75,7 @@ class _VentaState extends State<VentaView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          ProCosto.objContacto['nombre_completo'].toString(),
+          ProCosto.ListaContacto['nombre_completo'].toString(),
           style: TextStyle(
             color: Colors.white, // Color del texto
             fontSize:
