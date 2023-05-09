@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:io';
-import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -48,39 +45,6 @@ class _CobroState extends State<CobroView> {
       }
       print(_pagos_t);
     });
-  }
-
-  Future<void> _requestPermissions() async {
-    PermissionStatus statusConnect =
-        await Permission.bluetoothConnect.request();
-    PermissionStatus statusScan = await Permission.bluetoothScan.request();
-    PermissionStatus statusLocation =
-        await Permission.locationWhenInUse.request();
-
-    if (Platform.isAndroid) {
-      if (statusLocation.isDenied) {
-        await [
-          Permission.location,
-        ].request();
-      }
-    }
-
-    if (statusLocation.isGranted &&
-        statusScan.isGranted &&
-        statusConnect.isGranted) {
-      debugPrint('all granted');
-
-      // do scan bluetooth device function
-
-      printerManager.scanResults.listen((devices) async {
-        debugPrint('UI: Devices found ${devices.length}');
-        setState(() {
-          _devices = devices;
-        });
-      });
-    } else {
-      debugPrint('Not all permissions granted');
-    }
   }
 
   @override

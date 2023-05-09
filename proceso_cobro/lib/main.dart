@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:proceso_cobro/provider/provider_costo.dart';
 import 'package:provider/provider.dart';
 import './themes/tema.dart';
@@ -27,6 +26,9 @@ void main() {
 }
 
 void setup() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Permission.location.request();
+  await Permission.bluetooth.request();
   await Future.delayed(const Duration(milliseconds: 50));
   FlutterNativeSplash.remove();
 }
@@ -36,7 +38,8 @@ class ProsCobro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OKToast(child: MaterialApp(
+    return OKToast(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Proceso Cobro',
         theme: miTema,
@@ -44,6 +47,8 @@ class ProsCobro extends StatelessWidget {
         //   //primarySwatch: Colors.blue,
         // ),
         initialRoute: AppRoutes.rutaInicial,
-        routes: AppRoutes.getAppRutas())
-  );}
+        routes: AppRoutes.getAppRutas(),
+      ),
+    );
+  }
 }

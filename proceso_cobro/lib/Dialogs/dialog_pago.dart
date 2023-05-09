@@ -1,6 +1,16 @@
+import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
+import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
+import 'package:oktoast/oktoast.dart';
+import 'package:flutter/material.dart';
+import 'package:esc_pos_utils/esc_pos_utils.dart';
+import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../provider/provider_costo.dart';
 import 'dialog_calculadora.dart';
@@ -25,6 +35,7 @@ class _PagoDialogState extends State<PagoDialog> {
   @override
   String? _selectPago = "Por definir";
   DateTime tiempo = DateTime.now();
+
   Widget build(BuildContext context) {
     void close() {
       setState(() {
