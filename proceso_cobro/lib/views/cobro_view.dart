@@ -6,13 +6,6 @@ import '../Dialogs/dialog_pago.dart';
 import '../controllers/forma_pago_controller.dart';
 import '../provider/provider_costo.dart';
 
-import 'dart:io';
-import 'package:oktoast/oktoast.dart';
-import 'package:flutter/material.dart';
-import 'package:esc_pos_utils/esc_pos_utils.dart';
-import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 class CobroView extends StatefulWidget {
   CobroView({super.key});
   @override
@@ -31,8 +24,6 @@ class _CobroState extends State<CobroView> {
   @override
   void initState() {
     super.initState();
-    _requestPermissions();
-    _bluetoothPrinter = TextEditingController();
     _Pagos();
   }
 
@@ -50,85 +41,6 @@ class _CobroState extends State<CobroView> {
       print(_pagos_t);
     });
   }
-
-  PrinterBluetoothManager printerManager = PrinterBluetoothManager();
-  List<PrinterBluetooth> _devices = [];
-  late TextEditingController _bluetoothPrinter;
-
-  @override
-  void dispose() {
-    _bluetoothPrinter.dispose();
-    super.dispose();
-  }
-
-  Future<void> _requestPermissions() async {
-    PermissionStatus statusConnect =
-        await Permission.bluetoothConnect.request();
-    PermissionStatus statusScan = await Permission.bluetoothScan.request();
-    PermissionStatus statusLocation =
-        await Permission.locationWhenInUse.request();
-
-    if (Platform.isAndroid) {
-      if (statusLocation.isDenied) {
-        await [
-          Permission.location,
-        ].request();
-      }
-    }
-
-    if (statusLocation.isGranted &&
-        statusScan.isGranted &&
-        statusConnect.isGranted) {
-      debugPrint('all granted');
-
-      // do scan bluetooth device function
-
-      printerManager.scanResults.listen((devices) async {
-        debugPrint('UI: Devices found ${devices.length}');
-        setState(() {
-          _devices = devices;
-        });
-      });
-
-      _startScanDevices();
-    } else {
-      debugPrint('Not all permissions granted');
-    }
-  }
-
-  void _startScanDevices() {
-    setState(() {
-      _devices = [];
-    });
-    printerManager.startScan(const Duration(seconds: 5));
-  }
-
-  void _stopScanDevices() {
-    printerManager.stopScan();
-  }
-
-  void _testPrint(PrinterBluetooth printer) async {
-    printerManager.selectPrinter(printer);
-
-    //Don't forget to choose printer's paper
-    const PaperSize paper = PaperSize.mm58;
-    final CapabilityProfile profile = await CapabilityProfile.load();
-    final PosPrintResult res = await printerManager
-        .printTicket(await demoReceipt(paper, profile), queueSleepTimeMs: 100);
-
-    showToast(res.msg);
-  }
-
-  void _sendPrint(List<PrinterBluetooth> devices, String bluetoothPrinter) {
-    if (devices.isNotEmpty) {
-      for (var device in devices) {
-        if (device.name == bluetoothPrinter) {
-          _testPrint(device);
-        }
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // Usa widget.ProCosto en lugar de crear una nueva instancia de ProvCosto
@@ -397,5 +309,3 @@ class _CobroState extends State<CobroView> {
     );
   }
 }
-
-class PrinterBluetooth {}
