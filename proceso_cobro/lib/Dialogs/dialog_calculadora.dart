@@ -143,7 +143,7 @@ class _CalculadoraDialogState extends State<CalculadoraDialog> {
       child: Column(
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height * 0.09,
+            height: MediaQuery.of(context).size.height * 0.05,
             width: MediaQuery.of(context).size.width * 0.7,
             alignment: Alignment.centerRight,
             child: Text(

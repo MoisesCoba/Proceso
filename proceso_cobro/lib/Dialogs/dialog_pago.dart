@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../provider/provider_costo.dart';
 import 'dialog_calculadora.dart';
+import 'dialog_impresora.dart';
 
 class PagoDialog extends StatefulWidget {
   final ProvCosto ProCosto;
@@ -16,7 +17,6 @@ class PagoDialog extends StatefulWidget {
       required this.ProCosto,
       required this.TipoPagos});
 
-      
   @override
   _PagoDialogState createState() => _PagoDialogState();
 }
@@ -229,51 +229,47 @@ class _PagoDialogState extends State<PagoDialog> {
             padding: EdgeInsets.only(top: 10),
             child: IconButton(
                 onPressed: () {
-
-                  /*showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Draggable(
-                          feedback: Container(),
-                          child: AlertDialog(
-                            titlePadding: EdgeInsets.zero,
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppBar(
-                                  toolbarHeight:
-                                      MediaQuery.of(context).size.height * 0.04,
-                                  title: Text(
-                                    'Impresora',
-                                    style: TextStyle(
-                                        fontSize:
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Draggable(
+                        feedback: Container(),
+                        child: AlertDialog(
+                          titlePadding: EdgeInsets.zero,
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppBar(
+                                toolbarHeight:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                title: Text(
+                                  'Impresora',
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.04),
+                                ),
+                                automaticallyImplyLeading: false,
+                                actions: [
+                                  IconButton(
+                                    icon: Icon(Icons.close_outlined,
+                                        size:
                                             MediaQuery.of(context).size.width *
                                                 0.04),
+                                    onPressed: () => Navigator.pop(context),
                                   ),
-                                  automaticallyImplyLeading: false,
-                                  actions: [
-                                    IconButton(
-                                      icon: Icon(Icons.close_outlined,
-                                          size: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.04),
-                                      onPressed: () => Navigator.pop(context),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            actions: [
-                              CalculadoraDialog(
-                                  indice: widget.indice,
-                                  ProCosto: widget.ProCosto,
-                                  Close: close),
+                                ],
+                              ),
                             ],
                           ),
-                        );
-                      },
-                    );*/
+                          actions: [
+                            ImpresoraDialog(
+                                ProCosto: widget.ProCosto, Close: close),
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 },
                 tooltip: 'Imprimir ticket',
                 icon: Icon(
