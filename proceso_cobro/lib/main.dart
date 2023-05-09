@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:proceso_cobro/provider/provider_costo.dart';
 import 'package:provider/provider.dart';
 import './themes/tema.dart';
@@ -35,7 +36,7 @@ class ProsCobro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return OKToast(child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Proceso Cobro',
         theme: miTema,
@@ -43,6 +44,6 @@ class ProsCobro extends StatelessWidget {
         //   //primarySwatch: Colors.blue,
         // ),
         initialRoute: AppRoutes.rutaInicial,
-        routes: AppRoutes.getAppRutas());
-  }
+        routes: AppRoutes.getAppRutas())
+  );}
 }

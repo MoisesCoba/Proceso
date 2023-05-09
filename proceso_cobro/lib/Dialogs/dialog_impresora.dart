@@ -26,41 +26,22 @@ class _ImpresoraDialogState extends State<ImpresoraDialog> {
   @override
   void initState() {
     super.initState();
-    requestPermissions();
+    _requestPermissions();
   }
 
-  Future<void> requestPermissions() async {
-    // Solicitar permisos de Bluetooth
-    PermissionStatus statusConnect =
-        await Permission.bluetoothConnect.request();
-    PermissionStatus statusScan = await Permission.bluetoothScan.request();
-
-    // Solicitar permisos de ubicación
-    PermissionStatus statusLocation =
-        await Permission.locationWhenInUse.request();
-
-    // Comprobar los resultados de la solicitud de permisos
-    if (statusConnect == PermissionStatus.granted &&
-        statusScan == PermissionStatus.granted &&
-        statusLocation == PermissionStatus.granted) {
-      print('Todo bien');
-    } else {
-        print('alguno mal Todo bien');// Al menos un permiso ha sido denegado, proporcionar una explicación clara al usuario
-    }
-  }
-  /*Future<void> _requestPermissions() async {
+  Future<void> _requestPermissions() async {
     PermissionStatus statusConnect =
         await Permission.bluetoothConnect.request();
     PermissionStatus statusScan = await Permission.bluetoothScan.request();
     PermissionStatus statusLocation = await Permission.locationWhenInUse.request();
 
-    /*if (Platform.isAndroid) {
+    if (Platform.isAndroid) {
       if (statusLocation.isDenied) {
         await [
           Permission.location,
         ].request();
       }
-    }*/
+    }
 
     if (statusLocation.isGranted &&
         statusScan.isGranted &&
@@ -80,7 +61,7 @@ class _ImpresoraDialogState extends State<ImpresoraDialog> {
     } else {
       debugPrint('Not all permissions granted');
     }
-  }*/
+  }
 
   void _startScanDevices() {
     setState(() {
