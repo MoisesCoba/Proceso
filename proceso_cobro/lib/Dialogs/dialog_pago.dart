@@ -240,25 +240,6 @@ class _PagoDialogState extends State<PagoDialog> {
             padding: EdgeInsets.only(top: 10),
             child: IconButton(
                 onPressed: () {
-<<<<<<< HEAD
-                  /*showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Draggable(
-                          feedback: Container(),
-                          child: AlertDialog(
-                            titlePadding: EdgeInsets.zero,
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppBar(
-                                  toolbarHeight:
-                                      MediaQuery.of(context).size.height * 0.04,
-                                  title: Text(
-                                    'Impresora',
-                                    style: TextStyle(
-                                        fontSize:
-=======
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -284,7 +265,6 @@ class _PagoDialogState extends State<PagoDialog> {
                                   IconButton(
                                     icon: Icon(Icons.close_outlined,
                                         size:
->>>>>>> e0e8c0272584541bbd85ee1356a716c1060e3984
                                             MediaQuery.of(context).size.width *
                                                 0.04),
                                     onPressed: () => Navigator.pop(context),

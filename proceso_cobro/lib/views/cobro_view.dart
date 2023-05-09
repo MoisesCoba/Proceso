@@ -40,10 +40,7 @@ class _CobroState extends State<CobroView> {
       print(_pagos_t);
     });
   }
-<<<<<<< HEAD
 
-=======
->>>>>>> e0e8c0272584541bbd85ee1356a716c1060e3984
   @override
   Widget build(BuildContext context) {
     // Usa widget.ProCosto en lugar de crear una nueva instancia de ProvCosto
