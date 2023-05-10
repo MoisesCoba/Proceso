@@ -87,26 +87,6 @@ class HomeViewState extends State<HomeView> {
                   ListTile(
                     onTap: () {
                       ProCosto.ListaContacto = _elementos[index];
-
-                      ///final data = await SQLHelperDocumentoCredito.getItems();
-                      /*setState(() {
-                             ProCosto.objContacto = contacto;
-                              ProCosto.documentacion = data
-                                  .where((element) =>
-                                      element['contacto_id'] == contacto['id'])
-                                  .toList();
-                            });
-                            ProCosto.DocSaldo.clear();
-                            ProCosto.DocPago.clear();
-                            for (var i = 0;
-                                i < ProCosto.documentacion.length;
-                                i++) {
-                              ProCosto.DocSaldo.add(
-                                  ProCosto.documentacion[i]['saldo']);
-                              ProCosto.DocPago.add(
-                                  ProCosto.documentacion[i]['pagado']);
-                            }
-                            print(ProCosto.DocSaldo);*/
                       setState(() {
                         Navigator.pushNamed(context, 'contacto');
                       });

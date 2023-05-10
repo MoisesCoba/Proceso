@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:oktoast/oktoast.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../Dialogs/dialog_pago.dart';
@@ -22,14 +20,10 @@ class _CobroState extends State<CobroView> {
     "Saldo",
     "vencimiento"
   ];
-
-  PrinterBluetoothManager printerManager = PrinterBluetoothManager();
-  List<PrinterBluetooth> _devices = [];
   @override
   void initState() {
     super.initState();
     _Pagos();
-    _requestPermissions();
   }
 
   List<String> _pagos_t = [];
@@ -51,7 +45,7 @@ class _CobroState extends State<CobroView> {
   Widget build(BuildContext context) {
     // Usa widget.ProCosto en lugar de crear una nueva instancia de ProvCosto
     final ProCosto = Provider.of<ProvCosto>(context);
-    return OKToast(child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(
           ProCosto.ObjContacto['nombre_completo'].toString(),
@@ -63,7 +57,12 @@ class _CobroState extends State<CobroView> {
           ),
         ),
         centerTitle: true,
-        actions: [Icon(Icons.shopping_cart_outlined)],
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Icon(Icons.shopping_cart_outlined),
+          )
+        ],
       ),
       body: RefreshIndicator(
           onRefresh: _lista,
@@ -312,8 +311,6 @@ class _CobroState extends State<CobroView> {
                   )),
                 ],
               ))),
-    ));
-  
+    );
   }
-  
 }

@@ -1,3 +1,4 @@
+import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -10,8 +11,9 @@ class ProvCosto with ChangeNotifier {
   String _Formateado = '';
   List<String> _DocSaldo = [];
   List<String> _DocPago = [];
-
   Map<String, dynamic> _objContacto = {};
+
+  PrinterBluetooth? _devices;
 
   List<String> get pagos => _pagos;
   set pagos(List<String> valor) {
@@ -24,6 +26,7 @@ class ProvCosto with ChangeNotifier {
     _ListaContacto = valor;
     notifyListeners();
   }
+
   Map<String, dynamic> get ObjContacto => _objContacto;
   set ObjContacto(Map<String, dynamic> valor) {
     _objContacto = valor;
@@ -59,6 +62,12 @@ class ProvCosto with ChangeNotifier {
   List<String> get DocPago => _DocPago;
   set DocPago(List<String> valor) {
     _DocPago = valor;
+    notifyListeners();
+  }
+
+  PrinterBluetooth? get devices => _devices;
+  set devices(PrinterBluetooth? valor) {
+    _devices = valor;
     notifyListeners();
   }
 }

@@ -6,15 +6,12 @@ import 'package:get/get.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
-import 'package:oktoast/oktoast.dart';
-import 'package:flutter/material.dart';
-import 'package:esc_pos_utils/esc_pos_utils.dart';
-import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:proceso_cobro/Dialogs/test_bluethot.dart';
 
 import '../provider/provider_costo.dart';
 import 'dialog_calculadora.dart';
-import 'dialog_impresora.dart';
+import 'dialog_buscar_impresora.dart';
+import 'dialog_impresion.dart';
 
 class PagoDialog extends StatefulWidget {
   final ProvCosto ProCosto;
@@ -154,7 +151,6 @@ class _PagoDialogState extends State<PagoDialog> {
                         widget.ProCosto.DialogFecha =
                             "${formatoFecha.day}/${formatoFecha.month}/${formatoFecha.year}";
                       });
-                      print(widget.ProCosto.DialogFecha);
                     }
                   });
                 },
@@ -236,57 +232,92 @@ class _PagoDialogState extends State<PagoDialog> {
                   )),
             )
           ]),
-          Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Draggable(
-                        feedback: Container(),
-                        child: AlertDialog(
-                          titlePadding: EdgeInsets.zero,
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppBar(
-                                toolbarHeight:
-                                    MediaQuery.of(context).size.height * 0.04,
-                                title: Text(
-                                  'Impresora',
-                                  style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.04),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: IconButton(
+                    onPressed: () {
+                      print(widget.ProCosto.devices);
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                                elevation: 1,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
                                 ),
-                                automaticallyImplyLeading: false,
-                                actions: [
-                                  IconButton(
-                                    icon: Icon(Icons.close_outlined,
-                                        size:
-                                            MediaQuery.of(context).size.width *
+                                child: AlertDialogImpresion(
+                                    indice: widget.indice,
+                                    ProCosto: widget.ProCosto,
+                                    Close: close));
+                          });
+                    },
+                    tooltip: widget.ProCosto.devices?.name,
+                    icon: Icon(
+                      Icons.print,
+                      size: MediaQuery.of(context).size.width * 0.09,
+                    )),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Draggable(
+                              feedback: Container(),
+                              child: AlertDialog(
+                                titlePadding: EdgeInsets.zero,
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    AppBar(
+                                      toolbarHeight:
+                                          MediaQuery.of(context).size.height *
+                                              0.04,
+                                      title: Text(
+                                        'Impresora',
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.04),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
+                                      ),
+                                      automaticallyImplyLeading: false,
+                                      actions: [
+                                        IconButton(
+                                          icon: Icon(Icons.close_outlined,
+                                              size: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.04),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                actions: [
+                                  ImpresoraDialog(
+                                      ProCosto: widget.ProCosto,
+                                      Close: close,
+                                      Indice: widget.indice),
                                 ],
                               ),
-                            ],
-                          ),
-                          actions: [
-                            ImpresoraDialog(
-                                ProCosto: widget.ProCosto, Close: close),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                tooltip: 'Imprimir ticket',
-                icon: Icon(
-                  Icons.print,
-                  size: MediaQuery.of(context).size.width * 0.09,
-                )),
+                            );
+                          },
+                        );
+                      },
+                      tooltip: 'Seleccionar Ticket',
+                      icon: Icon(
+                        Icons.app_settings_alt,
+                        size: MediaQuery.of(context).size.width * 0.09,
+                      ))),
+            ],
           )
         ],
       ),
